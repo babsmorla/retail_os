@@ -1,0 +1,432 @@
+<div x-data="{ open: false, selectedProductId: '' }" class="min-h-screen bg-slate-50/50 p-6 md:p-8 flex flex-col gap-6 font-sans antialiased text-slate-800 relative">
+  <!-- Header Section -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-black text-slate-800 tracking-tight">Inventory</h1>
+      <p class="text-slate-400 text-xs font-semibold mt-1">Monitor stock levels and inventory movements.</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <%= link_to  shop_keeper_products_path, class: "px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold transition-all shadow-sm flex items-center gap-1.5" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H19.5A2.25 2.25 0 0 1 21.75 6v2.25a2.25 2.25 0 0 1-2.25 2.25H15.75A2.25 2.25 0 0 1 13.5 8.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H19.5a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H15.75A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+        </svg>
+        Products
+      <% end %>
+      <%= link_to "#", class: "px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm shadow-blue-500/10 flex items-center gap-1.5" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+        </svg>
+        Stock Report
+      <% end %>
+    </div>
+  </div>
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Card 1: Total Products -->
+    <div class="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-xs font-bold text-slate-400">Total Products</p>
+          <h2 class="text-3xl font-black text-slate-800 mt-2 tracking-tight"><%= @total_products %></h2>
+        </div>
+        <div class="bg-blue-50 text-blue-600 p-3 rounded-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+          </svg>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 mt-4 text-xs font-bold text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+        </svg>
+        <span><%= @total_stock %> units available</span>
+      </div>
+    </div>
+    <!-- Card 2: In Stock -->
+    <div class="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-xs font-bold text-slate-400">In Stock</p>
+          <h2 class="text-3xl font-black text-emerald-500 mt-2 tracking-tight"><%= @in_stock %></h2>
+        </div>
+        <div class="bg-emerald-50 text-emerald-500 p-3 rounded-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 mt-4 text-xs font-bold text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+        </svg>
+        <span>Healthy inventory level</span>
+      </div>
+    </div>
+    <!-- Card 3: Low Stock -->
+    <div class="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-xs font-bold text-slate-400">Low Stock</p>
+          <h2 class="text-3xl font-black text-amber-500 mt-2 tracking-tight"><%= @low_stock %></h2>
+        </div>
+        <div class="bg-amber-50 text-amber-500 p-3 rounded-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+          </svg>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 mt-4 text-xs font-bold text-red-500">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 animate-bounce">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6 9 12.75l4.306-4.306a11.95 11.95 0 0 1 5.814-5.518l2.74 1.22m0 0-5.94 2.281m5.94-2.28-2.28-5.941" />
+        </svg>
+        <span>Needs attention</span>
+      </div>
+    </div>
+    <!-- Card 4: Out of Stock -->
+    <div class="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-xs font-bold text-slate-400">Out of Stock</p>
+          <h2 class="text-3xl font-black text-red-500 mt-2 tracking-tight"><%= @out_of_stock %></h2>
+        </div>
+        <div class="bg-red-50 text-red-500 p-3 rounded-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 mt-4 text-xs font-bold text-red-500">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6 9 12.75l4.306-4.306a11.95 11.95 0 0 1 5.814-5.518l2.74 1.22m0 0-5.94 2.281m5.94-2.28-2.28-5.941" />
+        </svg>
+        <span>Requires restocking</span>
+      </div>
+    </div>
+  </div>
+  <!-- Inventory Content Wrapper -->
+  <div class="bg-white border border-slate-100 rounded-3xl shadow-sm overflow-hidden mt-2">
+    <!-- Table Toolbar / Search & Filters -->
+    <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 px-6 py-5 border-b border-slate-100">
+      <h2 class="text-base font-black text-slate-800">Inventory Table</h2>
+      <div class="flex flex-wrap items-center gap-3">
+        <%= form_with url:  shop_keeper_inventory_index_path, method: :get, local: true, class: "flex flex-wrap items-center gap-3" do %>
+          <!-- Search -->
+          <div class="relative min-w-[200px]">
+            <%= text_field_tag :search, params[:search], placeholder: "Search products...", class: "w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs font-medium text-slate-600 placeholder-slate-400 focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 focus:outline-none transition" %>
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-3.5 h-3.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21-21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.604 10.604Z"/>
+              </svg>
+            </div>
+          </div>
+          <!-- Category Filter Wrapper -->
+          <div class="relative">
+            <%= select_tag :category_id,
+              options_from_collection_for_select(@categories, :id, :name, params[:category_id]),
+              include_blank: "All Categories",
+              class: "bg-white border border-slate-200 rounded-xl px-3 py-2 pr-8 text-xs font-semibold text-slate-600 appearance-none focus:outline-none cursor-pointer hover:bg-slate-50 transition"
+            %>
+            <div class="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
+          <!-- Status Filter Wrapper -->
+          <div class="relative">
+            <%= select_tag :status,
+              options_for_select([
+                ["All Status", ""],
+                ["In Stock", "available"],
+                ["Low Stock", "low"],
+                ["Out of Stock", "out"]
+              ], params[:status]),
+              class: "bg-white border border-slate-200 rounded-xl px-3 py-2 pr-8 text-xs font-semibold text-slate-600 appearance-none focus:outline-none cursor-pointer hover:bg-slate-50 transition"
+            %>
+            <div class="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
+          <!-- Action Button: Filter -->
+          <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm transition">
+            Filter
+          </button>
+          <!-- Clear Filters Button -->
+          <% if params[:search].present? || params[:category_id].present? || params[:status].present? %>
+            <%= link_to "Clear",   shop_keeper_inventory_index_path, class: "text-xs font-bold text-slate-400 hover:text-red-500 transition-colors" %>
+          <% end %>
+        <% end %>
+        <span class="h-5 w-[1px] bg-slate-200 hidden xl:inline-block mx-1"></span>
+        <!-- Quick Actions Group -->
+        <div class="flex items-center gap-2">
+          <!-- TRIGGER: Global Stock Adjustment Modal -->
+          <button @click="open = true; selectedProductId = ''" type="button" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-sm shadow-blue-500/10 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+            </svg>
+            Adjust Stock
+          </button>
+          <%= link_to "#", class: "bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-sm shadow-amber-500/10 transition-all" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zM19.5 18.75a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zM15.75 6.75v10.5M3 10.5h18M3 14.25h12M15.75 6.75h3.481a1.5 1.5 0 0 1 1.15.54l2.122 2.546a1.5 1.5 0 0 1 .347.957V15a1.5 1.5 0 0 1-1.5 1.5h-1.5" />
+            </svg>
+            Request Restock
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- Products Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-100">
+        <thead class="bg-slate-50/70">
+          <tr>
+            <th class="px-6 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">SKU</th>
+            <th class="px-6 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Product Name</th>
+            <th class="px-6 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Category</th>
+            <th class="px-6 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Quantity</th>
+            <th class="px-6 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Reorder Level</th>
+            <th class="px-6 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Status</th>
+            <th class="px-6 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <% @products.each do |product| %>
+            <% 
+              qty = product.try(:quantity_on_hand) || 0
+              reorder = product.reorder_level || Product::DEFAULT_LOW_STOCK
+              
+              if qty == 0
+                bar_color = "bg-slate-200"
+                bar_percent = "0"
+              elsif qty <= reorder
+                bar_color = "bg-amber-400"
+                bar_percent = "25"
+              else
+                bar_color = "bg-emerald-500"
+                bar_percent = "75"
+              end
+            %>
+            <tr class="hover:bg-slate-50/50 transition-colors duration-150">
+              <td class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <%= product.sku.presence || "NO SKU" %>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="bg-blue-50 text-blue-600 p-2 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                    </svg>
+                  </div>
+                  <span class="font-bold text-slate-800 text-sm"><%= product.name %></span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-slate-400 font-semibold">
+                <%= product.category&.name || "Uncategorized" %>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-24 bg-slate-100 h-2 rounded-full overflow-hidden">
+                    <div class="h-full <%= bar_color %>" style="width: <%= bar_percent %>%"></div>
+                  </div>
+                  <span class="font-bold text-slate-800 text-sm"><%= qty %></span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-slate-400 font-semibold">
+                <%= reorder %>
+              </td>
+              <td class="px-6 py-4">
+                <% if qty == 0 %>
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-500">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                    Out of Stock
+                  </span>
+                <% elsif qty <= reorder %>
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-500">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    Low Stock
+                  </span>
+                <% else %>
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-500">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    In Stock
+                  </span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex gap-2">
+                  <!-- TRIGGER: Inline Row Stock Adjustment Modal -->
+                  <button @click="open = true; selectedProductId = '<%= product.id %>'" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-blue-100 hover:border-blue-200 text-blue-600 hover:bg-blue-50/50 text-xs font-bold transition shadow-sm cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.83 18.75a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                    </svg>
+                    Adjust
+                  </button>
+                  <%= link_to admin_product_stock_movements_path(product),
+      class: "flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-600 hover:bg-slate-50 text-xs font-bold transition shadow-sm" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+       fill="none"
+       viewBox="0 0 24 24"
+       stroke-width="2"
+       stroke="currentColor"
+       class="w-3.5 h-3.5">
+                      <path stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    History
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          <% if @products.empty? %>
+            <tr>
+              <td colspan="7" class="text-center py-16 text-slate-400">
+                <div class="flex flex-col items-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V7a2 2 0 00-2-2h-3V3H9v2H6a2 2 0 00-2 2v6m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4"/>
+                  </svg>
+                  <p class="font-bold">No products found</p>
+                  <p class="text-sm">There are currently no products tracked in inventory.</p>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- Active Rails Pagination Footer -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 border-t border-slate-100 bg-white">
+      <span class="text-xs font-semibold text-slate-400">
+        <% if @products.any? %>
+          Showing <%= @products.offset_value + 1 %>–<%= [@products.offset_value + @products.limit_value, @products.total_count].min %> of <%= @products.total_count %> products
+        <% else %>
+          Showing 0 products
+        <% end %>
+      </span>
+      <% if @products.total_pages > 1 %>
+        <div class="flex items-center gap-1 border border-slate-100 rounded-xl overflow-hidden p-0.5 shadow-sm">
+          <!-- Previous Button -->
+          <% if @products.first_page? %>
+            <span class="p-2 text-slate-300 cursor-not-allowed rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </span>
+          <% else %>
+            <%= link_to url_for(request.params.merge(page: @products.current_page - 1)), class: "p-2 hover:bg-slate-50 text-slate-400 hover:text-slate-600 rounded-lg transition" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            <% end %>
+          <% end %>
+          <!-- Pages Loop -->
+          <% (1..@products.total_pages).each do |page_num| %>
+            <% if page_num == @products.current_page %>
+              <span class="bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg select-none shadow-sm shadow-blue-500/10">
+                <%= page_num %>
+              </span>
+            <% else %>
+              <%= link_to page_num, url_for(request.params.merge(page: page_num)), class: "hover:bg-slate-50 text-slate-600 font-semibold text-xs px-3 py-1.5 rounded-lg transition" %>
+            <% end %>
+          <% end %>
+          <!-- Next Button -->
+          <% if @products.last_page? %>
+            <span class="p-2 text-slate-300 cursor-not-allowed rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </span>
+          <% else %>
+            <%= link_to url_for(request.params.merge(page: @products.current_page + 1)), class: "p-2 hover:bg-slate-50 text-slate-400 hover:text-slate-600 rounded-lg transition" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- ALPINE MODAL: Stock Adjustment -->
+  <div x-show="open" 
+       x-transition:enter="transition ease-out duration-300"
+       x-transition:enter-start="opacity-0"
+       x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-in duration-200"
+       x-transition:leave-start="opacity-100"
+       x-transition:leave-end="opacity-0"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 sm:p-6"
+       style="display: none;">
+    <!-- Modal Card Container -->
+    <div @click.away="open = false" 
+         x-show="open"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+         x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+         class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl max-w-md w-full relative border border-slate-100">
+      <!-- Close Button -->
+      <button @click="open = false" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition p-1.5 rounded-xl hover:bg-slate-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h2 class="text-xl font-black text-slate-800 tracking-tight">Quick Stock Adjustment</h2>
+      <p class="text-slate-400 text-xs font-semibold mt-1 mb-6">Instantly manually adjust inventory records.</p>
+      <!-- We use plain form_with to prevent 'nil' model exceptions if @adjustment isn't defined in index -->
+      <%= form_with scope: :stock_adjustment,
+              url: admin_inventory_adjustments_path,
+              method: :post,
+              local: true do |f| %>
+        <!-- Product Dropdown Section -->
+        <div>
+          <%= f.label :product_id, "Target Product", class: "block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" %>
+          <div class="relative">
+            <%= f.collection_select :product_id, @all_products_for_dropdown || @products, :id, :name, { prompt: "Select a Product..." }, 
+              class: "w-full rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-xs font-semibold text-slate-600 focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 focus:outline-none transition appearance-none cursor-pointer",
+              "x-model" => "selectedProductId",
+              required: true %>
+            <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- Adjustment Type Field -->
+        <div>
+          <%= f.label :adjustment_type, "Action", class: "block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" %>
+          <div class="relative">
+            <%= f.select :adjustment_type, [["Add Stock (+)", "add"], ["Remove Stock (-)", "remove"]], {}, 
+              class: "w-full rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-xs font-semibold text-slate-600 focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 focus:outline-none transition appearance-none cursor-pointer" %>
+            <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- Quantity Field -->
+        <div>
+          <%= f.label :quantity, "Quantity", class: "block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" %>
+          <%= f.number_field :quantity, placeholder: "e.g. 50", min: 1, required: true,
+            class: "w-full rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-xs font-semibold text-slate-600 focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 focus:outline-none transition" %>
+        </div>
+        <!-- Notes Field -->
+        <div>
+          <%= f.label :reason, "Change Reason (Note)", class: "block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" %>
+          <%= f.text_field :reason, placeholder: "e.g. Received shipment / Stock recount", required: true,
+            class: "w-full rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-xs font-semibold text-slate-600 focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 focus:outline-none transition" %>
+        </div>
+        <!-- Submit Group -->
+        <div class="flex items-center gap-3 mt-2">
+          <button @click="open = false" type="button" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-xl py-3 text-xs font-bold transition">
+            Cancel
+          </button>
+          <%= f.submit "Apply Adjustment", class: "w-2/3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 text-xs font-bold shadow-lg shadow-blue-500/15 transition cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

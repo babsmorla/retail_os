@@ -1,0 +1,52 @@
+<div class="max-w-xl mx-auto bg-white rounded-3xl p-8 shadow">
+  <h1 class="text-2xl font-black mb-6">
+    Quick Stock Adjustment
+  </h1>
+  <%= form_with model:@adjustment,
+url:admin_inventory_adjustments_path do |f| %>
+    <div class="mb-4">
+      <%= f.label :product_id,
+"Product",
+class:"font-bold text-sm"
+%>
+      <%= f.collection_select :product_id,
+@products,
+:id,
+:name,
+{},
+class:"w-full rounded-xl border p-3 mt-2"
+%>
+    </div>
+    <div class="mb-4">
+      <%= f.label :adjustment_type,
+"Adjustment Type"
+%>
+      <%= f.select :adjustment_type,
+[
+["Add Stock","add"],
+["Remove Stock","remove"]
+],
+{},
+class:"w-full rounded-xl border p-3 mt-2"
+%>
+    </div>
+    <div class="mb-4">
+      <%= f.label :quantity %>
+      <%= f.number_field :quantity,
+class:"w-full rounded-xl border p-3"
+%>
+    </div>
+    <div class="mb-4">
+      <%= f.label :reason,
+"Note"
+%>
+      <%= f.text_field :reason,
+placeholder:"e.g. Stock count correction",
+class:"w-full rounded-xl border p-3"
+%>
+    </div>
+    <%= f.submit "Apply Adjustment",
+class:"w-full bg-blue-600 text-white rounded-xl py-3 font-bold"
+%>
+  <% end %>
+</div>

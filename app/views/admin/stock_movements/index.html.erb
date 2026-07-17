@@ -1,0 +1,78 @@
+<div class="min-h-screen bg-slate-50 p-8">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <%= link_to "← Back to Inventory", shop_keeper_inventory_index_path, class: "text-sm text-blue-600 font-semibold" %>
+      <h1 class="text-3xl font-black text-slate-800 mt-3">Stock History</h1>
+      <p class="text-slate-500 mt-2"><strong><%= @product.name %></strong></p>
+      <p class="text-sm text-slate-400">SKU: <%= @product.sku.presence || "N/A" %></p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-center">
+      <p class="text-xs uppercase text-slate-400 font-bold">Current Stock</p>
+      <h2 class="text-3xl font-black text-blue-600 mt-2"><%= @product.quantity_on_hand %></h2>
+    </div>
+  </div>
+  <% unless @product.active? %>
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-r-lg mb-8 shadow-sm">
+      <p class="font-bold">Deactivated Product</p>
+      <p class="text-sm">This product is no longer active. Movements are shown for historical audit purposes only.</p>
+    </div>
+  <% end %>
+  <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+  </div>
+  <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+    <table class="min-w-full">
+      <thead class="bg-slate-50">
+        <tr>
+          <th class="px-6 py-4 text-left">Date</th>
+          <th class="px-6 py-4 text-left">Type</th>
+          <th class="px-6 py-4 text-left">Quantity</th>
+          <th class="px-6 py-4 text-left">Reference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @stock_movements.each do |movement| %>
+          <tr class="border-t">
+            <td class="px-6 py-4">
+              <%= movement.created_at.strftime("%d %b %Y %I:%M %p") %>
+            </td>
+            <td class="px-6 py-4">
+              <% case movement.movement_type %>
+              <% when "purchase" %>
+                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">
+                  Purchase
+                </span>
+              <% when "sale" %>
+                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">
+                  Sale
+                </span>
+              <% when "adjustment" %>
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">
+                  Adjustment
+                </span>
+              <% when "return" %>
+                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold">
+                  Return
+                </span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 font-bold">
+              <% if movement.quantity.positive? %>
+                +<%= movement.quantity %>
+              <% else %>
+                <%= movement.quantity %>
+              <% end %>
+            </td>
+            <td class="px-6 py-4">
+              <% if movement.reference.present? %>
+                <%= movement.reference.class.name %>
+                #<%= movement.reference.id %>
+              <% else %>
+                —
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
