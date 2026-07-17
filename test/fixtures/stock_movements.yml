@@ -1,15 +1,14 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
+# test/fixtures/stock_movements.yml
 one:
   product: one
   movement_type: 1
   quantity: 1
-  reference_type: MyString
+  reference_type: Sale     # <--- Change this to a real model name
   reference_id: 1
 
 two:
   product: two
   movement_type: 1
   quantity: 1
-  reference_type: MyString
+  reference_type: Sale     # <--- Change this to a real model name
   reference_id: 1

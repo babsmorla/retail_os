@@ -17,7 +17,7 @@
     <div><span class="text-slate-400">Receipt:</span> <strong class="text-slate-900">#<%= @sale.receipt_number %></strong></div>
     <div class="text-right"><span class="text-slate-400">Date:</span> <strong class="text-slate-900"><%= @sale.created_at.strftime("%d/%m/%Y") %></strong></div>
     <div><span class="text-slate-400">Time:</span> <strong class="text-slate-900"><%= @sale.created_at.strftime("%I:%M %p") %></strong></div>
-    <div class="text-right"><span class="text-slate-400">Cashier:</span> <strong class="text-slate-900"><%= @sale.shop_keeper.full_name.split.first %></strong></div>
+   <div class="text-right"><span class="text-slate-400">Cashier:</span> <strong class="text-slate-900"><%= (@sale&.shop_keeper&.full_name || "Staff").split.first %></strong></div>
     <div><span class="text-slate-400">Store:</span> <strong class="text-slate-900">Main Store</strong></div>
     <div class="text-right"><span class="text-slate-400">Payment:</span> <strong class="text-slate-900"><%= @sale.payment_method.humanize %></strong></div>
   </div>

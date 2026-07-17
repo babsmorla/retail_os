@@ -2,10 +2,12 @@
 
 one:
   sale: one
+  store: one
   printed_at: 2026-07-13 18:18:01
   reprint_count: 1
 
 two:
   sale: two
+  store: two
   printed_at: 2026-07-13 18:18:01
   reprint_count: 1

@@ -1,13 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  entry_type: 1
+  entry_type: 0
   reference: one
+  reference_type: Sale
   amount: 9.99
-  description: MyText
+  description: Sale revenue
 
 two:
-  entry_type: 1
+  entry_type: 0
   reference: two
+  reference_type: Sale
   amount: 9.99
-  description: MyText
+  description: Sale revenue
