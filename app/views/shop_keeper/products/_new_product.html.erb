@@ -1,0 +1,54 @@
+ <%= form_with model: [:shop_keeper, @product], class: "grid grid-cols-1 lg:grid-cols-3 gap-8" do |f| %>
+    <div class="lg:col-span-2 space-y-6">
+      <div class="bg-white p-6 rounded-lg border shadow-sm">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="col-span-2">
+            <%= f.label :name, "Product Name *", class: "block text-sm font-medium" %>
+            <%= f.text_field :name, class: "w-full mt-1 p-2 border rounded-md", placeholder: "e.g., Indomie Noodles x12" %>
+          </div>
+          <div>
+            <%= f.label :sku, "SKU *", class: "block text-sm font-medium" %>
+            <%= f.text_field :sku, class: "w-full mt-1 p-2 border rounded-md" %>
+          </div>
+          <div>
+            <%= f.label :category_id, "Category *", class: "block text-sm font-medium" %>
+            <%= f.collection_select :category_id, @categories, :id, :name, { prompt: "Select category..." }, { class: "w-full mt-1 p-2 border rounded-md" } %>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-lg border shadow-sm">
+        <h3 class="font-bold mb-4">Pricing</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <%= f.label :cost_price, "Cost Price (GHS) *", class: "block text-sm font-medium" %>
+            <%= f.number_field :cost_price, step: 0.01, class: "w-full mt-1 p-2 border rounded-md" %>
+          </div>
+          <div>
+            <%= f.label :unit_price, "Selling Price (GHS) *", class: "block text-sm font-medium" %>
+            <%= f.number_field :unit_price, step: 0.01, class: "w-full mt-1 p-2 border rounded-md" %>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-lg border shadow-sm">
+        <h3 class="font-bold mb-4">Inventory</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <%= f.label :quantity_on_hand, "Initial Stock Quantity *", class: "block text-sm font-medium" %>
+            <%= f.number_field :quantity_on_hand, class: "w-full mt-1 p-2 border rounded-md" %>
+          </div>
+          <div>
+            <%= f.label :reorder_level, "Reorder Level *", class: "block text-sm font-medium" %>
+            <%= f.number_field :reorder_level, class: "w-full mt-1 p-2 border rounded-md" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="space-y-6">
+      <div class="bg-white p-6 rounded-lg border shadow-sm text-center">
+        <p class="text-sm text-gray-500 mb-4">Product Image (Optional)</p>
+        <div class="border-2 border-dashed rounded-lg p-8 text-gray-400">Drag & Drop</div>
+      </div>
+      <%= f.submit "Create Product", class: "w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700" %>
+      <%= link_to "Save as Draft", "#", class: "block text-center w-full bg-gray-100 py-3 rounded-lg font-bold hover:bg-gray-200" %>
+    </div>
+  <% end %>
