@@ -1,0 +1,78 @@
+/* Kaminari Pagination Modern Theme Layout */
+.kaminari-pagination-container nav.pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kaminari-pagination-container nav.pagination span {
+  display: inline-block;
+}
+
+.kaminari-pagination-container nav.pagination a,
+.kaminari-pagination-container nav.pagination span.current {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 150ms ease-in-out;
+}
+
+.kaminari-pagination-container nav.pagination a {
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  background-color: #ffffff;
+}
+
+.kaminari-pagination-container nav.pagination a:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.kaminari-pagination-container nav.pagination span.current {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: 1px solid #2563eb !important;
+  cursor: default;
+}
+
+.kaminari-pagination-container nav.pagination span.gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ADDED: Scrollable table styles */
+.table-scroll-container {
+  max-height: 50vh;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.sticky-header th {
+  position: sticky;
+  top: 0;
+  background: #f9fafb;
+  z-index: 10;
+}
+
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
