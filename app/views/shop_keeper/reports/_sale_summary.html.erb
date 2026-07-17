@@ -1,0 +1,19 @@
+<div class="p-6">
+  <h1 class="text-2xl font-bold mb-6">Store Reports</h1>
+  <div class="flex gap-2 mb-6">
+    <% ["today", "yesterday", "this_week", "this_month"].each do |p| %>
+      <%= link_to p.humanize, shop_keeper_reports_path(period: p), 
+          class: "px-4 py-2 rounded #{params[:period] == p ? 'bg-blue-600 text-white' : 'bg-white border'}" %>
+    <% end %>
+  </div>
+  <div class="grid grid-cols-2 gap-4">
+    <div class="bg-white p-4 rounded shadow">
+      <p class="text-slate-500">Revenue</p>
+      <p class="text-2xl font-bold"><%= number_to_currency(@total_revenue) %></p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <p class="text-slate-500">Transactions</p>
+      <p class="text-2xl font-bold"><%= @total_transactions %></p>
+    </div>
+  </div>
+</div>
