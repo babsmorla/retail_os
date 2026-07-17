@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full bg-slate-50">
+<html class="h-full bg-slate-50/60">
   <head>
     <title><%= content_for(:title) || "RetailOS" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Bootstrap is included as fallback, but styles are dominated by pristine Tailwind classes -->
+    <!-- Bootstrap Fallback -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -25,58 +25,60 @@
       body {
         font-family: 'Inter', sans-serif;
       }
+      /* Clean styling override for the store switch dropdown */
+      .store-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.25em 1.25em;
+      }
     </style>
   </head>
-  <body class="h-full overflow-hidden text-slate-900 antialiased" x-data="{ sidebarOpen: false }">
+  <body class="h-full overflow-hidden text-slate-800 antialiased bg-slate-50/60" x-data="{ sidebarOpen: false }">
     <!-- Floating system notifications layer -->
     <div id="flash" class="fixed top-4 right-4 z-[9999]">
       <%= render "layouts/flash" %>
     </div>
     <!-- ================= APP SHELL ================= -->
-    <!-- h-full cascades from html -> body -> here, so there's a single source of truth
-         for the shell height (avoids mixing h-screen/h-full units, which is what caused
-         the drift/scroll on larger screens). overflow-hidden here means ONLY the panels
-         we explicitly mark as scrollable (nav list + <main>) will ever scroll. -->
     <div class="flex h-full min-h-0 overflow-hidden">
-      <!-- ================= SIDEBAR ================= -->
-      <!-- Mobile Sidebar Backdrop (Only visible when open on mobile screens) -->
+      <!-- Mobile Sidebar Backdrop -->
       <div x-show="sidebarOpen"
-           x-transition:enter="transition-opacity ease-linear duration-300"
+           x-transition:enter="transition-opacity ease-linear duration-200"
            x-transition:enter-start="opacity-0"
            x-transition:enter-end="opacity-100"
-           x-transition:leave="transition-opacity ease-linear duration-300"
+           x-transition:leave="transition-opacity ease-linear duration-200"
            x-transition:leave-start="opacity-100"
            x-transition:leave-end="opacity-0"
            @click="sidebarOpen = false"
-           class="fixed inset-0 z-40 bg-slate-900/60 lg:hidden"
+           class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm lg:hidden"
            style="display: none;"></div>
-      <!-- Left Sidebar Panel: fixed height, never grows past the viewport.
-           overflow-hidden + min-h-0 on children below keeps the nav list
-           as the only thing that scrolls inside it. -->
+      <!-- ================= SIDEBAR ================= -->
+      <!-- Redesigned as a clean, light-ambient slate panel with micro-borders -->
       <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-             class="fixed inset-y-0 left-0 z-50 flex h-full w-64 shrink-0 flex-col justify-between overflow-hidden bg-[#0a255c] transition-transform duration-300 ease-in-out lg:static lg:translate-x-0">
-        <!-- Sidebar Navigation Items Scroll Area (the ONLY scrollable region in the sidebar) -->
-        <div class="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-white/10">
+       class="fixed inset-y-0 left-0 z-50 flex h-full w-64 shrink-0 flex-col justify-between overflow-hidden border-r border-slate-800 bg-slate-900 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0">
+        <!-- Sidebar Scroll Area -->
+        <div class="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-5 scrollbar-thin">
           <!-- Brand Logo Header Area -->
-          <div class="flex items-center gap-3 px-2 mb-4 shrink-0">
-            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-600/20">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.5a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
-              </svg>
+          <div class="flex items-center justify-between px-2 mb-5 shrink-0">
+            <div class="flex items-center gap-2.5">
+              <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-sm shadow-indigo-600/10">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.5a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                </svg>
+              </div>
+              <span class="text-sm font-bold tracking-tight text-white">RetailOS</span>
             </div>
-            <span class="text-lg font-black tracking-tight text-white">RetailOS</span>
-          </div>
-          <!-- User Privilege Badge -->
-          <div class="px-2 mb-6 shrink-0">
-            <span class="inline-flex items-center rounded-lg bg-blue-500/15 px-2.5 py-1 text-[10px] font-bold text-blue-400 tracking-wider">
+            <span class="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-0.5 text-[10px] font-semibold text-indigo-400 border border-indigo-500/20">
               Admin
             </span>
           </div>
           <!-- Menu Links Grouping -->
-          <nav class="space-y-6">
+          <nav class="space-y-5">
             <!-- Group: Primary -->
-            <div class="space-y-1">
-              <%= link_to respond_to?(:shop_keeper_dashboard_path) ? shop_keeper_dashboard_path : "#", class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all bg-blue-600 text-white shadow-lg shadow-blue-600/10" do %>
+            <div class="space-y-0.5">
+              <% dashboard_path = respond_to?(:shop_keeper_dashboard_path) ? shop_keeper_dashboard_path : "#" %>
+              <%= link_to dashboard_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(dashboard_path) ? 'bg-indigo-600 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
                 </svg>
@@ -84,15 +86,17 @@
               <% end %>
             </div>
             <!-- Group: SALES -->
-            <div class="space-y-1">
-              <span class="block px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400/80 mb-2">Sales</span>
-              <%= link_to respond_to?(:new_shop_keeper_sale_path) ? new_shop_keeper_sale_path : "#", class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+            <div class="space-y-0.5">
+              <span class="block px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Sales</span>
+              <% new_sale_path = respond_to?(:new_shop_keeper_sale_path) ? new_shop_keeper_sale_path : "#" %>
+              <%= link_to new_sale_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(new_sale_path) ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                 </svg>
                 New Sale
               <% end %>
-              <%= link_to respond_to?(:shop_keeper_sales_path) ? shop_keeper_sales_path : "#", class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+              <% sales_history_path = respond_to?(:shop_keeper_sales_path) ? shop_keeper_sales_path : "#" %>
+              <%= link_to sales_history_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(sales_history_path) ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                 </svg>
@@ -100,33 +104,34 @@
               <% end %>
             </div>
             <!-- Group: INVENTORY -->
-            <div class="space-y-1">
-              <span class="block px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400/80 mb-2">Inventory</span>
-              <%= link_to shop_keeper_products_path, class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+            <div class="space-y-0.5">
+              <span class="block px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Inventory</span>
+              <%= link_to shop_keeper_products_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(shop_keeper_products_path) ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
                 </svg>
                 Products
               <% end %>
-              <%= link_to shop_keeper_categories_path, class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+              <%= link_to shop_keeper_categories_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(shop_keeper_categories_path) ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581a1.125 1.125 0 001.591 0l4.318-4.318a1.125 1.125 0 000-1.591L9.581 3.659A2.25 2.25 0 009.568 3zM6 6h.008v.008H6V6z" />
                 </svg>
                 Categories
               <% end %>
-              <%= link_to respond_to?(:shop_keeper_inventory_index_path) ? shop_keeper_inventory_index_path : "#", class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+              <% inventory_path = respond_to?(:shop_keeper_inventory_index_path) ? shop_keeper_inventory_index_path : "#" %>
+              <%= link_to inventory_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(inventory_path) ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                 </svg>
                 Inventory
               <% end %>
-              <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+              <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177V14.25m0 0H2.25m12 0a.75.75 0 100-1.5H12" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.124V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177V14.25m0 0H2.25m12 0a.75.75 0 100-1.5H12" />
                 </svg>
                 Restock Requests
               <% end %>
-              <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+              <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
                 </svg>
@@ -134,15 +139,15 @@
               <% end %>
             </div>
             <!-- Group: FINANCE -->
-            <div class="space-y-1">
-              <span class="block px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400/80 mb-2">Finance</span>
-              <%= link_to shop_keeper_accounting_path, class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+            <div class="space-y-0.5">
+              <span class="block px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Finance</span>
+              <%= link_to shop_keeper_accounting_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(shop_keeper_accounting_path) ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12h-15M9 6a3 3 0 11-6 0 3 3 0 016 0zm12 0a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 Accounting
               <% end %>
-              <%= link_to shop_keeper_reports_path, class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+              <%= link_to shop_keeper_reports_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(shop_keeper_reports_path) ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v5.625c0 .621-.504 1.125-1.125 1.125h-2.25A1.125 1.125 0 013 18.75v-5.625zM16.5 5.625c0-.621.504-1.125 1.125-1.125h2.25C20.496 4.5 21 5.004 21 5.625v13.125c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V5.625zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v10.125c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625z" />
                 </svg>
@@ -150,124 +155,119 @@
               <% end %>
             </div>
             <!-- Group: ADMIN -->
-            <div class="space-y-1">
-              <span class="block px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400/80 mb-2">Admin</span>
-              <%= link_to admin_users_path, class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                </svg>
-                Users
-              <% end %>
-              <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+            <div class="space-y-0.5">
+              <span class="block px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Admin</span>
+              <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 Settings
               <% end %>
-              <%= link_to shop_keeper_staff_index_path, class: "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+              <%= link_to shop_keeper_staff_index_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all #{current_page?(shop_keeper_staff_index_path) ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                 </svg>
                 Staff
               <% end %>
+              <!-- Store Switcher Wrapper -->
               <% if current_user.present? && current_user.stores.present? %>
-  <% if current_user.stores.count > 1 %>
-    <%= form_with url: shop_keeper_store_switch_path, method: :patch do |f| %>
-      <%= f.collection_select :id, current_user.stores, :id, :name,
-          { selected: current_store&.id },
-          { onchange: "this.form.submit()" } %>
-    <% end %>
-  <% end %>
-<% end %>
+                <% if current_user.stores.count > 1 %>
+                  <div class="pt-2 px-1 mt-2 border-t border-slate-800">
+                    <%= form_with url: shop_keeper_store_switch_path, method: :patch, class: "w-full" do |f| %>
+                      <%= f.collection_select :id, current_user.stores, :id, :name,
+                    { selected: current_store&.id },
+                    { onchange: "this.form.submit()", class: "store-select w-full rounded-md border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-slate-300 focus:border-indigo-500 focus:outline-none transition-all cursor-pointer" } %>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
             </div>
           </nav>
         </div>
-        <!-- Sidebar Sticky Footer Options (Notifications / Help) — pinned, never scrolls away -->
-        <div class="shrink-0 border-t border-slate-700/40 p-4 space-y-1">
-          <%= link_to "#", class: "flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
-            <div class="flex items-center gap-3">
+        <!-- Sidebar Footer Panel -->
+        <div class="shrink-0 border-t border-slate-800 p-3 space-y-0.5 bg-slate-950/40">
+          <%= link_to "#", class: "flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all" do %>
+            <div class="flex items-center gap-2.5">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
               </svg>
               Notifications
             </div>
-            <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white leading-none">3</span>
+            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[9px] font-bold text-white">3</span>
           <% end %>
-          <%= link_to "#", class: "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all" do %>
+          <%= link_to "#", class: "flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all" do %>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
             </svg>
-            Help
+            Help Desk
           <% end %>
         </div>
       </aside>
       <!-- ================= MAIN PLATFORM WRAPPER ================= -->
-      <!-- min-h-0 is the critical fix here: without it this flex child ignores
-           its parent's height and grows to fit <main>'s content, which is what
-           was causing the whole page to scroll on larger screens. -->
       <div class="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-        <!-- Header Top Navigation Bar -->
-        <header class="flex h-16 shrink-0 items-center justify-between border-b border-slate-200/80 bg-white px-6">
-          <!-- Mobile Menu Toggle & Dynamic View Title -->
-          <div class="flex items-center gap-4">
-            <button @click="sidebarOpen = true" class="text-slate-500 hover:text-slate-700 lg:hidden focus:outline-none">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+        <!-- Header Top Navigation Bar (Cleanly formatted with search dropped) -->
+        <header class="flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6">
+          <!-- Mobile Menu Toggle & Title -->
+          <div class="flex items-center gap-3">
+            <button @click="sidebarOpen = true" class="text-slate-500 hover:text-slate-700 lg:hidden focus:outline-none transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
             </button>
-            <h2 class="text-base font-black tracking-tight text-slate-900 sm:text-lg">
+            <h2 class="text-sm font-bold tracking-tight text-slate-900">
               <%= content_for(:title) || "Dashboard" %>
             </h2>
           </div>
           <!-- Topbar Actions Pane -->
-          <div class="flex items-center gap-3">
-            <!-- Universal Search Capsule (Hidden on small mobile) -->
-            <div class="hidden md:flex relative items-center">
-              <span class="absolute left-3.5 text-slate-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          <div class="flex items-center gap-6 py-2 px-4 ">
+            <!-- Shop Context Badge (Gives the store its own clear, visual space) -->
+            <% if respond_to?(:current_store) && current_store.present? %>
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 border border-blue-100/80 text-xs font-semibold text-blue-700 shadow-2xs transition hover:bg-blue-50">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-blue-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h2.64m-14-10.5V6a2.25 2.25 0 0 1 2.25-2.25h5.5A2.25 2.25 0 0 1 16.12 6v4.5m-9.75 0h9.75" />
                 </svg>
-              </span>
-              <input type="text"
-                     placeholder="Search anything..."
-                     class="w-60 rounded-full border border-slate-200 bg-slate-50/70 pl-9 pr-12 py-1.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all">
-              <kbd class="absolute right-3 inline-flex items-center rounded border border-slate-200 bg-white px-1.5 font-sans text-[10px] font-bold text-slate-400">⌘K</kbd>
-            </div>
-            <!-- Theme / Darkmode Toggle -->
-            <button class="rounded-xl border border-slate-200/80 bg-white p-1.5 text-slate-500 hover:bg-slate-50 transition active:scale-95">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-              </svg>
-            </button>
-            <!-- Dynamic Cashier/User Name -->
-            <div class="flex items-center gap-4">
-              <div class="text-left">
-                <p class="text-xs font-black text-slate-900">
-                  <%= respond_to?(:current_user) && current_user.present? ? current_user.full_name : "James Osei" %>
-                </p>
-                <p class="text-[10px] font-semibold text-slate-400 mt-1">Admin</p>
+                <span><%= current_store.name %></span>
               </div>
-              <!-- Rails Devise Sign-out Button -->
-              <%= link_to respond_to?(:destroy_user_session_path) ? destroy_user_session_path : "#",
-                          data: { turbo_method: :delete },
-                          class: "flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition" do %>
-                Sign Out
-              <% end %>
+            <% end %>
+            <!-- Right Actions Control Alignment Grid -->
+            <div class="flex items-center gap-4 ml-auto">
+              <!-- Theme Control Button -->
+              <button class=" p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition active:scale-95 shadow-2xs" title="Toggle Theme">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+              </button>
+              <!-- User Identity Module -->
+              <div class="flex items-center gap-4 border-l pl-4">
+                <div class="text-right hidden sm:block">
+                  <p class="text-sm font-bold text-slate-900 tracking-tight leading-snug">
+                    <%= respond_to?(:current_user) && current_user.present? ? current_user.full_name : "James Osei" %>
+                  </p>
+                  <p class="text-xs font-semibold text-slate-400 mt-0.5 tracking-wide uppercase text-[10px]">
+                    System Admin
+                  </p>
+                </div>
+                <!-- Rails Devise Sign-out Control -->
+                <%= link_to respond_to?(:destroy_user_session_path) ? destroy_user_session_path : "#",
+                  data: { turbo_method: :delete },
+                  class: "flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-50 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 hover:border-red-200 shadow-2xs transition active:scale-98" do %>
+                  <span>Sign Out</span>
+                <% end %>
+              </div>
             </div>
           </div>
         </header>
-        <!-- Dynamic Main Rails Content Section — the sole scroll region for page content -->
-        <main class="min-h-0 flex-1 overflow-y-auto bg-slate-50/50">
+        <!-- Dynamic Main Content Scrollpane -->
+        <main class="min-h-0 flex-1 overflow-y-auto bg-slate-50/40 p-6">
           <%= yield %>
         </main>
       </div>
     </div>
+    <!-- Assets / Script Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <%= turbo_frame_tag "category_modal_frame" %>
   </body>
-
 </html>

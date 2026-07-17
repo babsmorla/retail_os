@@ -8,6 +8,8 @@ module ShopKeeper
 
     layout :resolve_layout
 
+
+
     # Any controller inheriting from this can use this to restrict actions to admins
     def authenticate_admin!
       unless current_user&.admin?
@@ -43,5 +45,5 @@ module ShopKeeper
 
       redirect_to access_denied_path, alert: "Access denied."
   end
-end
+  end
 end
