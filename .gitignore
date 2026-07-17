@@ -43,3 +43,11 @@
 
 # Kamal secrets
 .kamal/secrets
+
+
+# Local development
+.continue/
+
+
+# Credentials
+config/credentials.yml.enc
