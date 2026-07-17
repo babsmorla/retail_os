@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
     # Sign Out / Log Out (This gives you logout_path!)
     delete "/logout", to: "users/sessions#destroy", as: :logout
+
+    root to: "users/sessions#new"
   end
 
   # Shop Keeper Namespace
@@ -58,8 +60,8 @@ Rails.application.routes.draw do
   end
 
   # Base Demo / Root
-  get "demo/index", to: "demo#index"
-  root "demo#index"
+  get "access_denied", to: "access_denied#index"
+
 
   # Health Check
   get "up" => "rails/health#show", as: :rails_health_check

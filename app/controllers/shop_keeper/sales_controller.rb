@@ -80,7 +80,7 @@ end
 
     def create
   if current_store.nil?
-    redirect_to root_path, alert: "No active store selected. Please select a store."
+    redirect_to access_denied_path, alert: "No active store selected. Please select a store."
     return
   end
 

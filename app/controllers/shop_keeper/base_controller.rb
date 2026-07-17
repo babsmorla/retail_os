@@ -19,7 +19,7 @@ module ShopKeeper
 
     def ensure_store_selected
       if current_store.nil? && !current_user.admin?
-        redirect_to root_path, alert: "Please select a store to continue."
+       redirect_to access_denied_path, alert: "Please select a store to continue."
       end
     end
 
@@ -41,7 +41,7 @@ module ShopKeeper
       return if current_user.admin?
       return if current_user.shop_keeper?
 
-      redirect_to root_path, alert: "Access denied."
-    end
+      redirect_to access_denied_path, alert: "Access denied."
   end
+end
 end

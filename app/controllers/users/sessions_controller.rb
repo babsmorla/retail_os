@@ -46,7 +46,7 @@ module Users
         shop_keeper_dashboard_path
 
       else
-        demo_index_path
+        access_denied_path
       end
     end
 

@@ -16,6 +16,6 @@ class ReceiptsController < ShopKeeper::BaseController
     @sale = @receipt.sale
     render layout: "ticket"
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: "You are not authorized to view this receipt."
+    redirect_to access_denied_path, alert: "You are not authorized to view this receipt."
   end
 end

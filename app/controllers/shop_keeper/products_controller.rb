@@ -8,7 +8,7 @@ module ShopKeeper
 
       if current_store.nil?
     flash[:alert] = "Please select a store to proceed."
-    redirect_to root_path and return
+    redirect_to access_denied_path and return
       end
 
       @products = current_store.products.active
