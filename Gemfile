@@ -69,7 +69,7 @@ end
 
 gem "devise", "~> 5.0"
 gem "pundit"
-gem 'kaminari'
+gem "kaminari"
 # Add this anywhere in your Gemfile (under your standard gems)
 gem "csv"
 gem "groupdate", "~> 6.8"

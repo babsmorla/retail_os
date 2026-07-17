@@ -4,16 +4,16 @@ class User < ApplicationRecord
 
   # --- Associations ---
   # Self-referential associations for staff hierarchy
-  belongs_to :owner, class_name: 'User', foreign_key: 'owner_id', optional: true
-  has_many :employees, class_name: 'User', foreign_key: 'owner_id', dependent: :destroy
+  belongs_to :owner, class_name: "User", foreign_key: "owner_id", optional: true
+  has_many :employees, class_name: "User", foreign_key: "owner_id", dependent: :destroy
 
   # 1. Define base relationships FIRST
-  belongs_to :store, optional: true 
+  belongs_to :store, optional: true
   has_many :memberships, inverse_of: :user, dependent: :destroy
-  
+
   # 2. Define "through" relationships SECOND
   has_many :stores, through: :memberships
-  
+
   # Sales tracking
   has_many :sales, foreign_key: :shop_keeper_id, dependent: :restrict_with_error
 
@@ -31,8 +31,8 @@ class User < ApplicationRecord
   validates_associated :stores
 
   # Ghanaian phone number format validation (+233XXXXXXXXX)
-  validates :phone_number, 
-            format: { with: /\A\+233\d{9}\z/, message: "is invalid (must be +233XXXXXXXXX)" }, 
+  validates :phone_number,
+            format: { with: /\A\+233\d{9}\z/, message: "is invalid (must be +233XXXXXXXXX)" },
             allow_blank: true
 
   # --- Scopes ---
@@ -64,11 +64,11 @@ class User < ApplicationRecord
   # Normalizes local 024/055/etc numbers to the required standard +233 format
   def normalize_phone_number
     return if phone_number.blank?
-    
+
     # Strip any spaces or accidental characters
     self.phone_number = phone_number.strip
 
-    if phone_number.start_with?('0')
+    if phone_number.start_with?("0")
       self.phone_number = "+233#{phone_number[1..-1]}"
     end
   end

@@ -13,7 +13,7 @@ module Sales
     deduct_inventory!
     confirm_sale!
     # Return the receipt created by the service
-    @receipt = generate_receipt 
+    @receipt = generate_receipt
     create_accounting_entry
   end
 
@@ -60,10 +60,10 @@ end
     def deduct_inventory!
       sale.sale_items.each do |item|
         product = item.product
-        
+
         # Lock the product row to prevent race conditions during high-volume sales
-        product.lock! 
-        
+        product.lock!
+
         product.decrement!(:quantity_on_hand, item.quantity)
 
         # Use the injected store association

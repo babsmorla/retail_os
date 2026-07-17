@@ -2,20 +2,16 @@ puts "📦 Creating products..."
 
 
 def create_product(category_name, data)
-
   category = Category.find_by!(name: category_name)
 
   Product.find_or_create_by!(sku: data[:sku]) do |product|
-
     product.name = data[:name]
     product.category = category
     product.unit_price = data[:unit_price]
     product.cost_price = data[:cost_price]
     product.quantity_on_hand = data[:quantity]
     product.reorder_level = data[:reorder_level]
-
   end
-
 end
 
 
@@ -128,9 +124,7 @@ products = [
 
 
 products.each do |category, product|
-
   create_product(category, product)
-
 end
 
 

@@ -63,14 +63,14 @@ module Accounting
     # ==================================
     def today_expenses
       accounting_entries
-        .where(entry_type: [:restock_cost, :adjustment])
+        .where(entry_type: [ :restock_cost, :adjustment ])
         .where(created_at: Date.current.all_day)
         .sum(:amount)
     end
 
     def monthly_expenses
       accounting_entries
-        .where(entry_type: [:restock_cost, :adjustment])
+        .where(entry_type: [ :restock_cost, :adjustment ])
         .where(created_at: Date.current.all_month)
         .sum(:amount)
     end

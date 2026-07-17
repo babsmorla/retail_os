@@ -3,17 +3,17 @@ module ShopKeeper
     def index
       # 1. Establish the base scope based on role
       base_scope = current_user.admin? ? Sale.all : current_store.sales
-      
+
       # 2. Determine Date Range Filter (Prioritize Quick-Period Filter first, then custom date range)
       if params[:period].present?
         @period = params[:period]
         range = case @period
-                when "today"      then Time.current.all_day
-                when "yesterday"  then 1.day.ago.all_day
-                when "this_week"  then Time.current.all_week
-                when "this_month" then Time.current.all_month
-                else Time.current.all_day
-                end
+        when "today"      then Time.current.all_day
+        when "yesterday"  then 1.day.ago.all_day
+        when "this_week"  then Time.current.all_week
+        when "this_month" then Time.current.all_month
+        else Time.current.all_day
+        end
         @sales_scope = base_scope.where(created_at: range)
       elsif params[:start_date].present? || params[:end_date].present?
         @sales_scope = base_scope
@@ -45,8 +45,8 @@ module ShopKeeper
       # 6. Metadata for dropdowns & sidebar metrics
       @today_total = base_scope.where(created_at: Time.current.all_day).sum(:grand_total)
       @monthly_total = base_scope.where(created_at: Time.current.all_month).sum(:grand_total)
-      #shop keppers should include the owner
-      @shopkeepers = current_store.users.where(role: [:shop_keeper, :admin]).order(:full_name)
+      # shop keppers should include the owner
+      @shopkeepers = current_store.users.where(role: [ :shop_keeper, :admin ]).order(:full_name)
 
       respond_to do |format|
         format.html
@@ -61,7 +61,7 @@ module ShopKeeper
     end
 
     def new
-  @categories = current_store.categories.where(active: true) 
+  @categories = current_store.categories.where(active: true)
 
   # Fetch active products in active categories
   @products = current_store.products.active.available
@@ -73,7 +73,7 @@ module ShopKeeper
   @products = @products.where("LOWER(products.name) LIKE ?", "%#{params[:search].downcase}%") if params[:search].present?
 
   # --- ADD PAGINATION HERE ---
-  @products = @products.page(params[:page]).per(12) 
+  @products = @products.page(params[:page]).per(12)
 
   @sale = current_store.sales.build
 end
@@ -85,17 +85,17 @@ end
   end
 
   @sale = current_store.sales.build(sale_params)
-  @sale.store_id = current_store.id 
+  @sale.store_id = current_store.id
   @sale.shop_keeper_id = current_user.id
 
   # Start a begin block here to monitor the save attempt
   begin
     save_and_confirm_sale
   rescue ActiveRecord::RecordNotUnique
-    # Reset the duplicate receipt number so the before_validation callback 
+    # Reset the duplicate receipt number so the before_validation callback
     # runs again to generate a fresh, unique suffix (e.g. RS-20260717062414-XXXX)
-    @sale.receipt_number = nil 
-    
+    @sale.receipt_number = nil
+
     # Try one more time with the new unique suffix
     save_and_confirm_sale
   end
@@ -114,7 +114,7 @@ end
     end
   else
     Rails.logger.error "SALE INVALID: #{@sale.errors.full_messages}"
-    
+
     # Re-populate local variables for the render fallback
     @categories = current_store.categories.where(active: true)
     @products = current_store.products.active.available
@@ -127,7 +127,7 @@ end
     def sale_params
       params.require(:sale).permit(
         :payment_method,
-        sale_items_attributes: [:product_id, :quantity, :unit_price_at_sale]
+        sale_items_attributes: [ :product_id, :quantity, :unit_price_at_sale ]
       )
     end
   end

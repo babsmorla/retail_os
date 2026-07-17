@@ -1,7 +1,7 @@
 # app/controllers/receipts_controller.rb
 class ReceiptsController < ShopKeeper::BaseController
   # Remove before_action :authenticate_user! if it's already in BaseController
-  
+
   def show
     # Your existing logic...
     if current_user.admin?
@@ -12,7 +12,7 @@ class ReceiptsController < ShopKeeper::BaseController
                               .joins(:sale)
                               .find_by!(id: params[:id], sales: { shop_keeper_id: current_user.id })
     end
-    
+
     @sale = @receipt.sale
     render layout: "ticket"
   rescue ActiveRecord::RecordNotFound

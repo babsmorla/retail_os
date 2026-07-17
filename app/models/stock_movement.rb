@@ -23,5 +23,4 @@ belongs_to :store # <--- ADD THIS
               only_integer: true,
               greater_than: 0
             }
-
 end

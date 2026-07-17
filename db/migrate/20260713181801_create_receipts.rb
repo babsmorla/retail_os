@@ -1,9 +1,6 @@
 class CreateReceipts < ActiveRecord::Migration[8.0]
-
   def change
-
     create_table :receipts do |t|
-
       t.references :sale,
                    null: false,
                    foreign_key: true
@@ -18,9 +15,6 @@ class CreateReceipts < ActiveRecord::Migration[8.0]
 
 
       t.timestamps
-
     end
-
   end
-
 end

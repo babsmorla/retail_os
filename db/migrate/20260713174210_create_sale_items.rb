@@ -1,7 +1,6 @@
 class CreateSaleItems < ActiveRecord::Migration[8.0]
   def change
     create_table :sale_items do |t|
-
       t.references :sale,
                    null: false,
                    foreign_key: true

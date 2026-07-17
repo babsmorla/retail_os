@@ -1,5 +1,4 @@
 class StockAdjustment < ApplicationRecord
-
   belongs_to :product
   belongs_to :user
 
@@ -17,6 +16,4 @@ class StockAdjustment < ApplicationRecord
 
   validates :reason,
             presence: true
-
-
 end

@@ -1,22 +1,16 @@
 module Inventory
-
   class AdjustStockService
-
     def initialize(product:, quantity:, adjustment_type:, reason:, user:)
-
       @product = product
       @quantity = quantity.to_i
       @adjustment_type = adjustment_type
       @reason = reason
       @user = user
-
     end
 
 
     def call
-
       ActiveRecord::Base.transaction do
-
         adjustment =
           StockAdjustment.create!(
             product: @product,
@@ -66,11 +60,7 @@ module Inventory
 
 
         adjustment
-
       end
-
     end
-
   end
-
 end

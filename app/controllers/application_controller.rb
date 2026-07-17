@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Pundit error handling...
-  # 
+  #
   rescue_from Pundit::NotAuthorizedError do
     redirect_back(
       fallback_location: root_path,

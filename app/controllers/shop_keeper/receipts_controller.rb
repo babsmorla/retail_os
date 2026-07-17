@@ -2,7 +2,7 @@ module ShopKeeper
   class ReceiptsController < BaseController
     def show
   # Define the base eager loading to avoid N+1 queries
-  includes_list = { sale: [:sale_items, :shop_keeper, { sale_items: :product }] }
+  includes_list = { sale: [ :sale_items, :shop_keeper, { sale_items: :product } ] }
 
   if current_user.admin?
     # Admins can see any receipt

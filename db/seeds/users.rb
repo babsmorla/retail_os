@@ -29,16 +29,12 @@ users = [
 
 
 users.each do |data|
-
   User.find_or_create_by!(email: data[:email]) do |user|
-
     user.full_name = data[:full_name]
     user.password = data[:password]
     user.role = data[:role]
     user.active = true
-
   end
-
 end
 
 

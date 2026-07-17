@@ -1,7 +1,7 @@
 # app/controllers/shop_keeper/categories_controller.rb
 module ShopKeeper
   class CategoriesController < BaseController
-    before_action :set_category, only: [:edit, :update, :destroy, :show]
+    before_action :set_category, only: [ :edit, :update, :destroy, :show ]
 
     def index
   # Start with all categories in your store
@@ -11,7 +11,7 @@ module ShopKeeper
   if params[:search].present?
     # Prefix "name" and "description" with "categories." to resolve ambiguity
     @categories = @categories.where(
-      "LOWER(categories.name) LIKE :query OR LOWER(categories.description) LIKE :query", 
+      "LOWER(categories.name) LIKE :query OR LOWER(categories.description) LIKE :query",
       query: "%#{params[:search].downcase}%"
     )
   end
@@ -25,7 +25,7 @@ end
 
     def create
       @category = current_store.categories.build(category_params)
-      
+
       if @category.save
         redirect_to shop_keeper_categories_path, notice: "Category created successfully."
       else

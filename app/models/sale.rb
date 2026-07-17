@@ -2,11 +2,11 @@ class Sale < ApplicationRecord
   # 1. ASSOCIATIONS
   belongs_to :shop_keeper, class_name: "User"
   belongs_to :store
-  belongs_to :staff, class_name: 'User', optional: true
-  
+  belongs_to :staff, class_name: "User", optional: true
+
   has_many :sale_items, dependent: :destroy
   has_many :products, through: :sale_items
-  
+
   has_one :receipt, dependent: :destroy
   has_one :accounting_entry, as: :reference, dependent: :destroy
 
@@ -48,8 +48,8 @@ class Sale < ApplicationRecord
 
   # 6. CSV EXPORT
   def self.to_csv
-    require 'csv'
-    
+    require "csv"
+
     attributes = %w[receipt_number created_at shop_keeper_email payment_method subtotal tax_total discount_total grand_total]
 
     CSV.generate(headers: true) do |csv|
@@ -73,7 +73,7 @@ class Sale < ApplicationRecord
   def must_have_items
     if sale_items.empty? || sale_items.all?(&:marked_for_destruction?)
       errors.add(:base, "Sale must contain at least one item")
-    end  
+    end
   end
 
   # UPDATED: Generates high-entropy receipt numbers (e.g., RS-20260717070022-K2P8)
@@ -86,7 +86,7 @@ class Sale < ApplicationRecord
   if store_name.present?
     # Split the name by spaces (e.g., "Accra Mall" -> ["Accra", "Mall"])
     words = store_name.strip.split(/\s+/)
-    
+
     if words.size > 1
       # Take the first letter of each word (e.g., "Accra Mall" -> "AM")
       prefix = words.map { |word| word[0] }.join.upcase
@@ -100,7 +100,7 @@ class Sale < ApplicationRecord
 
   # 2. Append the date and a secure 4-digit random suffix
   # Generates formats like: AM-20260717-A9F3
-  timestamp = Time.current.strftime('%Y%m%d') # Shorter, cleaner date format
+  timestamp = Time.current.strftime("%Y%m%d") # Shorter, cleaner date format
   random_suffix = SecureRandom.alphanumeric(4).upcase
 
   self.receipt_number = "#{prefix}-#{timestamp}-#{random_suffix}"

@@ -1,6 +1,5 @@
 module ShopKeeper
    class DashboardController < BaseController
-
    def index
       # 1. Today's Sales (Scoped to current user and inner joined on receipts to be safe)
       today_sales = current_user.sales
@@ -36,9 +35,5 @@ module ShopKeeper
       @low_stock_products = Product.where("quantity_on_hand <= low_stock_threshold")
       @low_stock_count = @low_stock_products.count
     end
-
-
-    
-
-  end
+   end
 end

@@ -27,7 +27,6 @@ end
 
 
   def adjustment_params
-
     params.require(:stock_adjustment)
     .permit(
       :product_id,
@@ -35,9 +34,5 @@ end
       :adjustment_type,
       :reason
     )
-
   end
-
 end
-
-

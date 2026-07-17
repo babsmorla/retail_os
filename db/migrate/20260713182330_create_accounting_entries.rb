@@ -1,10 +1,6 @@
 class CreateAccountingEntries < ActiveRecord::Migration[8.0]
-
   def change
-
     create_table :accounting_entries do |t|
-
-
       t.integer :entry_type,
                 default: 0,
                 null: false
@@ -25,9 +21,6 @@ class CreateAccountingEntries < ActiveRecord::Migration[8.0]
 
 
       t.timestamps
-
     end
-
   end
-
 end

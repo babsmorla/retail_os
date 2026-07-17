@@ -1,7 +1,6 @@
 class CreateSales < ActiveRecord::Migration[8.0]
   def change
     create_table :sales do |t|
-
       t.string :receipt_number,
                null: false
 

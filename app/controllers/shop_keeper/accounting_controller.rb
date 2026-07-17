@@ -1,7 +1,7 @@
 module ShopKeeper
   class AccountingController < BaseController
-skip_before_action :ensure_shop_keeper! 
-    
+skip_before_action :ensure_shop_keeper!
+
     # Enforce admin check
     before_action :authenticate_admin!
     def index
@@ -56,6 +56,5 @@ skip_before_action :ensure_shop_keeper!
         values: chart.values.map(&:to_f)
       }
     end
-
   end
 end

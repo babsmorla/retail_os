@@ -7,9 +7,9 @@ Store.destroy_all
 puts "Creating foundation..."
 store = Store.create!(name: "Main Branch", location: "Accra", active: true)
 user = User.create!(
-  email: "admin@retail.com", 
-  full_name: "Admin User", 
-  password: "password123", 
+  email: "admin@retail.com",
+  full_name: "Admin User",
+  password: "password123",
   role: 0
 )
 

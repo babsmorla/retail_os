@@ -1,5 +1,4 @@
 class SaleItem < ApplicationRecord
-
   belongs_to :sale
   belongs_to :product
 
@@ -18,21 +17,15 @@ class SaleItem < ApplicationRecord
 
 
   def set_price_from_product
-
     if unit_price_at_sale.blank? && product.present?
       self.unit_price_at_sale = product.unit_price
     end
-
   end
 
 
 
   def calculate_total
-
     self.line_total =
       quantity.to_f * unit_price_at_sale.to_f
-
   end
-
-
 end

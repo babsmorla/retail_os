@@ -1,14 +1,13 @@
 module ShopKeeper
   class InventoryController < BaseController
+    skip_before_action :ensure_shop_keeper!
 
-    skip_before_action :ensure_shop_keeper! 
-    
     # Enforce admin check
     before_action :authenticate_admin!
     def index
       # 1. Scope everything to the current_store
       base_scope = current_store.products.active
-      
+
       @products = base_scope.includes(:category, :stock_movements)
                             .page(params[:page])
                             .per(5)

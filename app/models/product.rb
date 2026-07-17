@@ -1,6 +1,5 @@
-require 'csv'
+require "csv"
 class Product < ApplicationRecord
-
   belongs_to :category,
              optional: true
   belongs_to :store
@@ -22,7 +21,7 @@ validates :sku, presence: true, uniqueness: { scope: :store_id, message: "has al
             presence: true
 
 
-      
+
 
   scope :available,
         -> {
@@ -42,7 +41,7 @@ validates :sku, presence: true, uniqueness: { scope: :store_id, message: "has al
   scope :active, -> { where(active: true) }
 
   def self.to_csv
-    attributes = %w{name sku unit_price cost_price quantity_on_hand}
+    attributes = %w[name sku unit_price cost_price quantity_on_hand]
 
     CSV.generate(headers: true) do |csv|
       csv << attributes # Header row
@@ -52,5 +51,4 @@ validates :sku, presence: true, uniqueness: { scope: :store_id, message: "has al
       end
     end
   end
-
 end

@@ -8,29 +8,29 @@ Rails.application.routes.draw do
   # Custom Devise Path Aliases
   devise_scope :user do
     # Sign Up
-    get '/signup', to: 'users/registrations#new', as: :signup
-    post '/signup', to: 'users/registrations#create'
-    
+    get "/signup", to: "users/registrations#new", as: :signup
+    post "/signup", to: "users/registrations#create"
+
     # Sign In / Log In (This fixes your login_path issue!)
-    get '/login', to: 'users/sessions#new', as: :login
-    post '/login', to: 'users/sessions#create'
-    
+    get "/login", to: "users/sessions#new", as: :login
+    post "/login", to: "users/sessions#create"
+
     # Sign Out / Log Out (This gives you logout_path!)
-    delete '/logout', to: 'users/sessions#destroy', as: :logout
+    delete "/logout", to: "users/sessions#destroy", as: :logout
   end
 
   # Shop Keeper Namespace
   namespace :shop_keeper do
     get "dashboard", to: "dashboard#index"
     get "accounting", to: "accounting#index"
-    
+
     resources :categories
-    resources :reports, only: [:index]
+    resources :reports, only: [ :index ]
     resources :staff
-    resources :inventory, only: [:index]
-    resource :store_switch, only: [:update]
-    resources :receipts, only: [:show]
-    
+    resources :inventory, only: [ :index ]
+    resource :store_switch, only: [ :update ]
+    resources :receipts, only: [ :show ]
+
     resources :products do
       collection do
         get :archived
@@ -39,10 +39,10 @@ Rails.application.routes.draw do
         patch :restore
       end
     end
-    
-    resources :sales, only: [:index, :new, :create, :show] do
+
+    resources :sales, only: [ :index, :new, :create, :show ] do
       collection do
-        get :success 
+        get :success
         get :history
       end
     end
@@ -52,9 +52,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :products do
-      resources :stock_movements, only: [:index]
+      resources :stock_movements, only: [ :index ]
     end
-    resources :inventory_adjustments, only: [:new, :create]
+    resources :inventory_adjustments, only: [ :new, :create ]
   end
 
   # Base Demo / Root

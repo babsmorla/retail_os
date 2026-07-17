@@ -1,8 +1,8 @@
 # app/controllers/users/registrations_controller.rb
 class Users::RegistrationsController < Devise::RegistrationsController
   layout "auth"
-  
-  before_action :configure_sign_up_params, only: [:create]
+
+  before_action :configure_sign_up_params, only: [ :create ]
 
   def new
     build_resource({})
@@ -31,12 +31,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up) do |user_params|
       user_params.permit(
-        :email, 
-        :password, 
-        :password_confirmation, 
+        :email,
+        :password,
+        :password_confirmation,
         :full_name,
         memberships_attributes: [
-          store_attributes: [:name, :location]
+          store_attributes: [ :name, :location ]
         ]
       )
     end

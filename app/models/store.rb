@@ -3,11 +3,11 @@ class Store < ApplicationRecord
   # 1. ASSOCIATIONS
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
-  
+
   has_many :products, dependent: :destroy
   has_many :sales, dependent: :destroy
   has_many :sale_items, through: :sales
-  
+
   has_many :categories, dependent: :destroy
   has_many :accounting_entries, dependent: :destroy
   has_many :stock_movements, dependent: :destroy
@@ -25,5 +25,4 @@ class Store < ApplicationRecord
     # This safely ensures 'active' is set to true on new stores
     self.active = true if active.nil?
   end
-  
 end

@@ -63,17 +63,13 @@ categories = [
 
 
 categories.each do |data|
-
   Category.find_or_create_by!(name: data[:name]) do |category|
-
     category.description = data[:description]
     category.icon = data[:icon]
     category.color = data[:color]
     category.category_type = data[:category_type]
     category.active = true
-
   end
-
 end
 
 

@@ -1,5 +1,4 @@
 class AccountingEntry < ApplicationRecord
-
   belongs_to :store
 
   belongs_to :reference,
@@ -16,5 +15,4 @@ class AccountingEntry < ApplicationRecord
 
   validates :amount,
             presence: true
-
 end
