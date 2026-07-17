@@ -1,0 +1,18 @@
+<div class="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+  <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 max-w-sm w-full text-center">
+    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+      </svg>
+    </div>
+    <h2 class="text-xl font-bold text-slate-800 mb-2">Sale Successful!</h2>
+    <p class="text-sm text-slate-500 mb-8">The transaction has been recorded.</p>
+    <div class="flex flex-col gap-3">
+      <%= link_to "View Receipt", shop_keeper_receipt_path(@receipt), 
+          target: "_blank", 
+          class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition" %>
+      <%= link_to "New Sale", new_shop_keeper_sale_path, 
+          class: "w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 px-4 rounded-xl transition" %>
+    </div>
+  </div>
+</div>
