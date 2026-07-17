@@ -1,0 +1,91 @@
+<!-- Container: Optimized for screen preview (320px) and exact 80mm thermal print width -->
+<div class="mx-auto my-6 w-[80mm] max-w-full bg-white p-4 font-mono text-[11px] leading-relaxed text-slate-900 border shadow-sm rounded-2xl print:m-0 print:border-none print:p-0 print:shadow-none">
+  <!-- Screen Only Quick Action Bar -->
+  <!-- Header Store Brand -->
+  <div class="text-center">
+    <h2 class="text-sm font-bold uppercase tracking-tight text-slate-950">
+      <%= @sale.respond_to?(:store_name) ? @sale.store_name : "Kwame Brothers Store" %>
+    </h2>
+    <p class="text-[9px] text-slate-500 mt-0.5">34 Market Street, Accra, Ghana</p>
+    <p class="text-[9px] text-slate-500">Tel: +233 24 000 0000</p>
+  </div>
+  <!-- Dash Divider -->
+  <div class="my-3 border-b border-dashed border-slate-300"></div>
+  <!-- Receipt Metadata Grid -->
+  <div class="grid grid-cols-2 gap-y-1 text-[10px] text-slate-600">
+    <div><span class="text-slate-400">Receipt:</span> <strong class="text-slate-900">#<%= @sale.receipt_number %></strong></div>
+    <div class="text-right"><span class="text-slate-400">Date:</span> <strong class="text-slate-900"><%= @sale.created_at.strftime("%d/%m/%Y") %></strong></div>
+    <div><span class="text-slate-400">Time:</span> <strong class="text-slate-900"><%= @sale.created_at.strftime("%I:%M %p") %></strong></div>
+    <div class="text-right"><span class="text-slate-400">Cashier:</span> <strong class="text-slate-900"><%= @sale.shop_keeper.full_name.split.first %></strong></div>
+    <div><span class="text-slate-400">Store:</span> <strong class="text-slate-900">Main Store</strong></div>
+    <div class="text-right"><span class="text-slate-400">Payment:</span> <strong class="text-slate-900"><%= @sale.payment_method.humanize %></strong></div>
+  </div>
+  <!-- Dash Divider -->
+  <div class="my-3 border-b border-dashed border-slate-300"></div>
+  <!-- Sale Items Table -->
+  <table class="w-full text-left">
+    <thead>
+      <tr class="border-b border-slate-200 text-[9px] font-bold uppercase text-slate-400">
+        <th class="pb-1 text-left">Item</th>
+        <th class="pb-1 text-center">Qty</th>
+        <th class="pb-1 text-right">Unit</th>
+        <th class="pb-1 text-right">Total</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <% @sale.sale_items.each do |item| %>
+        <tr>
+          <td class="py-2 pr-1 font-bold text-slate-900"><%= item.product.name %></td>
+          <td class="py-2 text-center text-slate-600"><%= item.quantity %></td>
+          <td class="py-2 text-right text-slate-600">GH₵<%= item.unit_price_at_sale %></td>
+          <td class="py-2 text-right font-bold text-slate-900">GH₵<%= item.line_total %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <!-- Dash Divider -->
+  <div class="my-2 border-b border-dashed border-slate-300"></div>
+  <!-- Billing Totals -->
+  <div class="space-y-1.5 text-right text-[10px]">
+    <div class="flex justify-between">
+      <span class="text-slate-400">Subtotal:</span>
+      <span class="font-bold text-slate-900">GH₵<%= @sale.subtotal %></span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-slate-400">Discount:</span>
+      <span class="font-bold text-emerald-600">
+        <%= @sale.discount_total.to_f > 0 ? "- GH₵#{@sale.discount_total}" : "GH₵0.00" %>
+      </span>
+    </div>
+    <!-- 12.5% Tax Row -->
+    <!-- Grand Total Highlight -->
+    <div class="flex justify-between pt-1 border-t border-slate-100 text-xs font-bold text-slate-950">
+      <span>GRAND TOTAL:</span>
+      <span>GH₵<%= number_with_precision(@sale.grand_total, precision: 2) %></span>
+    </div>
+  </div>
+  <!-- Dash Divider -->
+  <div class="my-3 border-b border-dashed border-slate-300"></div>
+  <!-- Footer, Guarantee Policy & Barcode -->
+  <div class="text-center space-y-1.5">
+    <p class="font-bold text-slate-950">Thank you for shopping with us!</p>
+    <p class="text-[9px] text-slate-400 leading-tight">Returns accepted within 7 days with original receipt.</p>
+    <!-- Compact Barcode Representation -->
+    <div class="pt-2 flex flex-col items-center gap-1">
+      <svg class="h-6 w-36 text-slate-800" viewBox="0 0 100 30" fill="currentColor">
+        <rect x="0" y="0" width="2" height="30"/><rect x="3" y="0" width="1" height="30"/><rect x="5" y="0" width="1" height="30"/><rect x="7" y="0" width="3" height="30"/><rect x="11" y="0" width="1" height="30"/><rect x="13" y="0" width="2" height="30"/><rect x="16" y="0" width="1" height="30"/><rect x="18" y="0" width="4" height="30"/><rect x="23" y="0" width="1" height="30"/><rect x="25" y="0" width="2" height="30"/><rect x="28" y="0" width="1" height="30"/><rect x="30" y="0" width="3" height="30"/><rect x="34" y="0" width="1" height="30"/><rect x="36" y="0" width="1" height="30"/><rect x="38" y="0" width="2" height="30"/><rect x="41" y="0" width="1" height="30"/><rect x="43" y="0" width="4" height="30"/><rect x="48" y="0" width="2" height="30"/><rect x="51" y="0" width="1" height="30"/><rect x="53" y="0" width="2" height="30"/><rect x="56" y="0" width="3" height="30"/><rect x="60" y="0" width="1" height="30"/><rect x="62" y="0" width="1" height="30"/><rect x="64" y="0" width="2" height="30"/><rect x="67" y="0" width="1" height="30"/><rect x="69" y="0" width="4" height="30"/><rect x="74" y="0" width="2" height="30"/><rect x="77" y="0" width="1" height="30"/><rect x="79" y="0" width="3" height="30"/><rect x="83" y="0" width="1" height="30"/><rect x="85" y="0" width="2" height="30"/><rect x="88" y="0" width="1" height="30"/><rect x="90" y="0" width="4" height="30"/><rect x="95" y="0" width="2" height="30"/><rect x="98" y="0" width="1" height="30"/>
+      </svg>
+      <span class="text-[8px] tracking-widest text-slate-400">
+        <%= @sale.receipt_number %>-<%= @sale.created_at.strftime("%Y%m%d") %>
+      </span>
+    </div>
+  </div>
+  <div class="print:hidden mt-5 flex justify-center gap-2 border-b border-slate-100 pb-4">
+    <button onclick="window.print()" class="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-[10px] font-bold text-white shadow-sm hover:bg-blue-700 active:scale-95 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 1.252a1.125 1.125 0 0 1-1.107 1.328H7.218a1.125 1.125 0 0 1-1.107-1.328L6.34 18m11.318 0h-11.32m12-9V5.25A2.25 2.25 0 0 0 16.5 3h-9A2.25 2.25 0 0 0 5.25 5.25V9m13.5 0H5.25" />
+      </svg>
+      Print Receipt
+    </button>
+  </div>
+</div>
