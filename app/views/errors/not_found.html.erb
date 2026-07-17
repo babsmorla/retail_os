@@ -1,0 +1,14 @@
+<%# app/views/errors/not_found.html.erb %>
+<div class="text-center py-12 px-4">
+  <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-50 text-red-600 mb-4">
+    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+    </svg>
+  </div>
+  <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Record not found</h1>
+  <p class="mt-4 text-base leading-7 text-slate-600">The record you are looking for might have been deleted, deactivated, or you do not have permission to view it.</p>
+  <div class="mt-10 flex items-center justify-center gap-x-6">
+    <!-- This links back to the previous page, falling back to root_path if none exists -->
+   <%= link_to "Go Back", "javascript:history.back()" ||  shop_keeper_dashboard_path, class: "rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
+  </div>
+</div>

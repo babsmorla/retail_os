@@ -1,0 +1,30 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">User Management</h1>
+    <%= link_to "+ Add User", new_admin_user_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg" %>
+  </div>
+  <table class="w-full bg-white rounded-lg shadow border">
+    <thead class="bg-slate-50">
+      <tr>
+        <th class="p-4 text-left">Full Name</th>
+        <th class="p-4 text-left">Email</th>
+        <th class="p-4 text-left">Role</th>
+        <th class="p-4 text-center">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr class="border-t">
+          <td class="p-4"><%= user.full_name %></td>
+          <td class="p-4"><%= user.email %></td>
+          <td class="p-4 capitalize"><%= user.role.humanize %></td>
+          <td class="p-4 text-center">
+            <span class="px-2 py-1 rounded <%= user.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' %>">
+              <%= user.active ? 'Active' : 'Inactive' %>
+            </span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,2 @@
+module ShopKeeper::ReportsHelper
+end

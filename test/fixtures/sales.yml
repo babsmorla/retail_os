@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  receipt_number: MyString
+  shop_keeper: one
+  status: 1
+  subtotal: 9.99
+  discount_total: 9.99
+  tax_total: 9.99
+  grand_total: 9.99
+  payment_method: 1
+
+two:
+  receipt_number: MyString
+  shop_keeper: two
+  status: 1
+  subtotal: 9.99
+  discount_total: 9.99
+  tax_total: 9.99
+  grand_total: 9.99
+  payment_method: 1

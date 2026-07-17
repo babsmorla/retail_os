@@ -1,0 +1,2 @@
+module ShopKeeper::DashboardHelper
+end

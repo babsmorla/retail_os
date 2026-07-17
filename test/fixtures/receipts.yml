@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sale: one
+  printed_at: 2026-07-13 18:18:01
+  reprint_count: 1
+
+two:
+  sale: two
+  printed_at: 2026-07-13 18:18:01
+  reprint_count: 1

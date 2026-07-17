@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  entry_type: 1
+  reference: one
+  amount: 9.99
+  description: MyText
+
+two:
+  entry_type: 1
+  reference: two
+  amount: 9.99
+  description: MyText

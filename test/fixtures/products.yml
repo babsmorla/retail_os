@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  sku: MyString
+  unit_price: 9.99
+  cost_price: 9.99
+  quantity_on_hand: 1
+  reorder_level: 1
+  category: one
+
+two:
+  name: MyString
+  sku: MyString
+  unit_price: 9.99
+  cost_price: 9.99
+  quantity_on_hand: 1
+  reorder_level: 1
+  category: two

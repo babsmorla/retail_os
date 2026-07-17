@@ -1,0 +1,380 @@
+<!-- Main form component with real-time reactive Alpine.js state -->
+<div x-data="{
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      username: '',
+      password: '',
+      role: 'shop_keeper',
+      usernameCopied: false,
+      passwordCopied: false,
+
+      // Computed Display Name
+      get displayName() {
+        if (!this.firstName && !this.lastName) return 'New User';
+        return `${this.firstName} ${this.lastName}`.trim();
+      },
+
+      // Logic to format dynamic names to standard username pattern
+      syncUsername() {
+        if (this.firstName || this.lastName) {
+          const first = this.firstName.toLowerCase().replace(/[^a-z0-9]/g, '');
+          const last = this.lastName.toLowerCase().replace(/[^a-z0-9]/g, '');
+          this.username = last ? `${first}.${last}` : first;
+        }
+      },
+
+      // Generate a secure but readable temporary password matching your standards
+      autoGenerate() {
+        this.syncUsername();
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+        let generatedPassword = 'Retail@';
+        for (let i = 0; i < 6; i++) {
+          generatedPassword += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        generatedPassword += '!';
+        this.password = generatedPassword;
+      },
+
+      // Utility helper to copy text fields with instant visual checkmark feedback
+      copyToClipboard(text, type) {
+        if (!text) return;
+        navigator.clipboard.writeText(text).then(() => {
+  if (type === 'username') {
+  this.usernameCopied = true;
+  setTimeout(() => this.usernameCopied = false, 2000);
+  } else if (type === 'password') {
+  this.passwordCopied = true;
+  setTimeout(() => this.passwordCopied = false, 2000);
+  }
+  });
+  }
+  }"
+  class="min-h-screen bg-slate-50/50 p-6 font-sans antialiased text-slate-800">
+  <% if @user.errors.any? %>
+    <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-6">
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= form_with model: @user, url: shop_keeper_staff_index_path, local: true, class: "max-w-6xl mx-auto flex flex-col lg:flex-row gap-6 items-start" do |f| %>
+    <!-- ==================== LEFT COLUMN: FORMS & ACTIONS ==================== -->
+    <div class="flex-1 w-full space-y-6">
+      <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-xs font-bold text-blue-700 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-9-1h2m-2 0H4m15 0h2m-2 0h-2m-9 1h2m-2 0H4" />
+        </svg>
+        This user will be added to: <span><%= current_store.name %></span>
+      </div>
+      <!-- Card 1: Personal Information -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm">
+        <h2 class="text-sm font-bold text-slate-800 tracking-tight mb-5">Personal Information</h2>
+        <div class="space-y-4">
+          <!-- First Name & Last Name Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-2">First Name</label>
+              <%= f.text_field :first_name, 
+                               placeholder: "e.g., James", 
+                               class: "w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-3 text-xs font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:bg-white transition duration-150",
+                               "x-model": "firstName",
+                               "@input": "syncUsername()" %>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-2">Last Name</label>
+              <%= f.text_field :last_name, 
+                               placeholder: "e.g., Osei", 
+                               class: "w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-3 text-xs font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:bg-white transition duration-150",
+                               "x-model": "lastName",
+                               "@input": "syncUsername()" %>
+            </div>
+          </div>
+          <!-- Email Address -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-2">Email Address</label>
+            <%= f.email_field :email, 
+                             placeholder: "james.osei@retailos.com", 
+                             class: "w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-3 text-xs font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:bg-white transition duration-150",
+                             "x-model": "email" %>
+          </div>
+          <!-- Phone Number -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-2">Phone Number</label>
+            <%= f.telephone_field :phone_number, 
+                                  placeholder: "+233 24 000 0000", 
+                                  class: "w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-3 text-xs font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:bg-white transition duration-150",
+                                  "x-model": "phoneNumber" %>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2: Login Credentials -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm">
+        <div class="flex justify-between items-center mb-1">
+          <div>
+            <h2 class="text-sm font-bold text-slate-800 tracking-tight">Login Credentials</h2>
+            <p class="text-[10px] text-slate-400 font-medium">Username and initial password</p>
+          </div>
+          <button type="button" 
+                  @click="autoGenerate()" 
+                  class="bg-blue-50 text-blue-600 hover:bg-blue-100/80 text-[10px] font-bold px-3 py-1.5 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            Auto-generate
+          </button>
+        </div>
+        <div class="mt-5 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Username Input -->
+            <div class="relative">
+              <label class="block text-xs font-semibold text-slate-500 mb-2">Username</label>
+              <div class="relative flex items-center">
+                <%= f.text_field :username, 
+                                 placeholder: "james.osei", 
+                                 class: "w-full bg-slate-50 border border-slate-100 rounded-2xl pl-4 pr-11 py-3 text-xs font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:bg-white transition duration-150",
+                                 "x-model": "username" %>
+                <button type="button" 
+                        @click="copyToClipboard(username, 'username')" 
+                        class="absolute right-3.5 text-slate-400 hover:text-slate-600 transition">
+                  <template x-if="!usernameCopied">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
+                    </svg>
+                  </template>
+                  <template x-if="usernameCopied">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-emerald-500">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                  </template>
+                </button>
+              </div>
+              <span class="block text-[10px] text-slate-400 mt-2 font-medium">Used for login</span>
+            </div>
+            <!-- Password Input -->
+            <div class="relative">
+              <label class="block text-xs font-semibold text-slate-500 mb-2">Assigned Password</label>
+              <div class="relative flex items-center">
+                <%= f.text_field :password, 
+                                 placeholder: "Retail1@2025!", 
+                                 class: "w-full bg-slate-50 border border-slate-100 rounded-2xl pl-4 pr-11 py-3 text-xs font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:bg-white transition duration-150",
+                                 "x-model": "password" %>
+                <button type="button" 
+                        @click="copyToClipboard(password, 'password')" 
+                        class="absolute right-3.5 text-slate-400 hover:text-slate-600 transition">
+                  <template x-if="!passwordCopied">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
+                    </svg>
+                  </template>
+                  <template x-if="passwordCopied">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-emerald-500">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                  </template>
+                </button>
+              </div>
+              <span class="block text-[10px] text-slate-400 mt-2 font-medium">Share only with user</span>
+            </div>
+          </div>
+          <!-- Alert Box -->
+          <div class="bg-amber-50/60 border border-amber-100 rounded-2xl p-4 flex items-start gap-3 mt-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-amber-500 shrink-0 mt-0.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+            </svg>
+            <span class="text-[10px] text-amber-700 font-bold leading-relaxed">
+              Password shown once. Share it securely with the user before closing.
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3: Select Role -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm">
+        <h2 class="text-sm font-bold text-slate-800 tracking-tight mb-5">Select Role</h2>
+        <!-- Interactive Role Selections linked dynamically -->
+        <%= f.hidden_field :role, "x-model": "role" %>
+        <div class="space-y-3.5">
+          <!-- Option: Admin -->
+          <button type="button" 
+                  @click="role = 'admin'"
+                  :class="role === 'admin' ? 'border-blue-600 bg-blue-50/20 shadow-sm' : 'border-slate-100 hover:bg-slate-50/40'"
+                  class="w-full text-left p-4 border rounded-2xl transition-all duration-150 flex items-start justify-between cursor-pointer group">
+            <div class="flex gap-4">
+              <div class="bg-slate-50 border border-slate-100 p-2.5 rounded-xl text-slate-500 shrink-0 self-start group-hover:bg-white transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xs font-bold text-slate-800">Admin</h3>
+                <p class="text-[10px] text-slate-400 font-medium mt-1">Full access to all features, settings, and user management</p>
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">All Features</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Settings</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">User Management</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Reports</span>
+                </div>
+              </div>
+            </div>
+            <!-- Custom Radio Selection Dot -->
+            <div :class="role === 'admin' ? 'border-blue-600 bg-blue-600' : 'border-slate-200'" class="w-5 h-5 border rounded-full shrink-0 flex items-center justify-center transition mt-1">
+              <template x-if="role === 'admin'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3 h-3 text-white">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                </svg>
+              </template>
+            </div>
+          </button>
+          <!-- Option: Shopkeeper -->
+          <button type="button" 
+                  @click="role = 'shop_keeper'"
+                  :class="role === 'shop_keeper' ? 'border-blue-600 bg-blue-50/20 shadow-sm' : 'border-slate-100 hover:bg-slate-50/40'"
+                  class="w-full text-left p-4 border rounded-2xl transition-all duration-150 flex items-start justify-between cursor-pointer group">
+            <div class="flex gap-4">
+              <div class="bg-slate-50 border border-slate-100 p-2.5 rounded-xl text-slate-500 shrink-0 self-start group-hover:bg-white transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xs font-bold text-slate-800">Shopkeeper</h3>
+                <p class="text-[10px] text-slate-400 font-medium mt-1">Point of Sale, sales history, and receipts. Optimised for fast checkout</p>
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">New Sale</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Sales History</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Receipts</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Returns</span>
+                </div>
+              </div>
+            </div>
+            <div :class="role === 'shop_keeper' ? 'border-blue-600 bg-blue-600' : 'border-slate-200'" class="w-5 h-5 border rounded-full shrink-0 flex items-center justify-center transition mt-1">
+              <template x-if="role === 'shop_keeper'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3 h-3 text-white">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                </svg>
+              </template>
+            </div>
+          </button>
+          <!-- Option: Inventory Officer -->
+          <button type="button" 
+                  @click="role = 'inventory_officer'"
+                  :class="role === 'inventory_officer' ? 'border-blue-600 bg-blue-50/20 shadow-sm' : 'border-slate-100 hover:bg-slate-50/40'"
+                  class="w-full text-left p-4 border rounded-2xl transition-all duration-150 flex items-start justify-between cursor-pointer group">
+            <div class="flex gap-4">
+              <div class="bg-slate-50 border border-slate-100 p-2.5 rounded-xl text-slate-500 shrink-0 self-start group-hover:bg-white transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xs font-bold text-slate-800">Inventory Officer</h3>
+                <p class="text-[10px] text-slate-400 font-medium mt-1">Inventory management, stock tracking, and restock requests</p>
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Inventory</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Restock Requests</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Stock Adjust</span>
+                  <span class="text-[9px] font-bold text-slate-500 bg-slate-100/70 px-2 py-0.5 rounded-md">Reports</span>
+                </div>
+              </div>
+            </div>
+            <div :class="role === 'inventory_officer' ? 'border-blue-600 bg-blue-600' : 'border-slate-200'" class="w-5 h-5 border rounded-full shrink-0 flex items-center justify-center transition mt-1">
+              <template x-if="role === 'inventory_officer'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3 h-3 text-white">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                </svg>
+              </template>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- ==================== RIGHT COLUMN: SUMMARY & SIDEBAR ==================== -->
+    <div class="w-full lg:w-[360px] shrink-0 space-y-6 lg:sticky lg:top-6">
+      <!-- Card A: Live Summary -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm">
+        <h2 class="text-sm font-bold text-slate-800 tracking-tight mb-5">Summary</h2>
+        <!-- Live Preview Row -->
+        <div class="flex items-center gap-4.5 mb-6">
+          <div class="bg-blue-50 text-blue-600 p-3.5 rounded-full shrink-0 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          </div>
+          <div>
+            <span class="block text-[10px] text-slate-400 font-semibold">Name</span>
+            <h3 class="text-sm font-extrabold text-slate-800 tracking-tight line-clamp-1" x-text="displayName"></h3>
+          </div>
+        </div>
+        <!-- Meta Details Summary Grid -->
+        <div class="space-y-4">
+          <!-- Username Summary -->
+          <div>
+            <span class="block text-[10px] text-slate-400 font-semibold mb-1.5">Username</span>
+            <div class="bg-slate-50 border border-slate-100 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold overflow-hidden text-ellipsis whitespace-nowrap min-h-[36px]"
+                 x-text="username || '-'">
+            </div>
+          </div>
+          <!-- Role Badge Summary -->
+          <div>
+            <span class="block text-[10px] text-slate-400 font-semibold mb-1.5">Role</span>
+            <div class="flex">
+              <span :class="{
+                'bg-blue-50 text-blue-600': role === 'shop_keeper',
+                'bg-purple-50 text-purple-600': role === 'admin',
+                'bg-amber-50 text-amber-600': role === 'inventory_officer'
+              }" 
+              class="inline-flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-full capitalize">
+                <span :class="{
+                  'bg-blue-600': role === 'shop_keeper',
+                  'bg-purple-600': role === 'admin',
+                  'bg-amber-600': role === 'inventory_officer'
+                }" class="w-1.5 h-1.5 rounded-full"></span>
+                <span x-text="role.replace('_', ' ')"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- Horizontal Break -->
+        <div class="border-t border-slate-100/80 my-6"></div>
+        <!-- Submissions / Actions -->
+        <div class="space-y-3">
+          <%= f.submit "Create User", 
+                       class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-2xl transition duration-150 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 cursor-pointer text-xs" %>
+          <%= link_to "Cancel", 
+                      admin_users_path, 
+                      class: "w-full block text-center bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold py-3 px-4 rounded-2xl transition duration-150 text-xs" %>
+        </div>
+        <span class="block text-center text-[10px] text-slate-400 mt-4 font-semibold">
+          An invitation email will be sent.
+        </span>
+      </div>
+      <!-- Card B: Credential Tips -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm">
+        <h2 class="text-xs font-bold text-slate-800 tracking-tight mb-4">Credential Tips</h2>
+        <ul class="space-y-3 text-[10px] font-semibold text-slate-500">
+          <li class="flex items-center gap-2.5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5 text-emerald-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            Share via WhatsApp or secure message
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5 text-emerald-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            User can change password anytime
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5 text-emerald-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            Admin can reset password anytime
+          </li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+</div>

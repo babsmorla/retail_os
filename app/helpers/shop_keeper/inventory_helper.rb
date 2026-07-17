@@ -1,0 +1,2 @@
+module ShopKeeper::InventoryHelper
+end

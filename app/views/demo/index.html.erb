@@ -1,0 +1,31 @@
+<div class="fixed inset-0 flex items-center justify-center bg-slate-50 p-4">
+  <div class="w-full max-w-sm bg-white border border-slate-200 rounded-xl shadow-xl p-8">
+    <!-- Icon Container -->
+    <div class="flex items-center justify-center w-14 h-14 mx-auto mb-6 bg-slate-100 rounded-full">
+      <svg class="w-7 h-7 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11c0 3.517-1.009 6.796-2.153 9H12m-3-11H8m3 3h2m4 0a2 2 0 11-4 0 2 2 0 014 0zM12 21a9 9 0 100-18 9 9 0 000 18z" />
+      </svg>
+    </div>
+    <!-- Title & Text -->
+    <h2 class="text-xl font-semibold text-slate-900 text-center mb-2">Access Denied</h2>
+    <p class="text-sm text-slate-500 text-center mb-8 leading-relaxed">
+      This area is restricted to administrators. Please authenticate with an administrative account to proceed.
+    </p>
+    <!-- Buttons -->
+    <div class="space-y-3">
+      <% if user_signed_in? %>
+        <div class="text-center text-xs text-slate-400 mb-2">
+          Signed in as <span class="font-medium text-slate-700"><%= current_user.email %></span>
+        </div>
+        <%= link_to "Logout and Switch Account", destroy_user_session_path, 
+            data: { turbo_method: :delete }, 
+            class: "block w-full text-center py-2.5 px-4 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition" %>
+      <% else %>
+        <%= link_to 'Login as Admin', new_user_session_path, 
+            class: "block w-full text-center py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition" %>
+        <%= link_to 'Back to Dashboard', root_path, 
+            class: "block w-full text-center py-2.5 px-4 text-slate-600 hover:text-slate-800 text-sm font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition" %>
+      <% end %>
+    </div>
+  </div>
+</div>
