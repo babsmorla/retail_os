@@ -73,3 +73,5 @@ gem "kaminari"
 # Add this anywhere in your Gemfile (under your standard gems)
 gem "csv"
 gem "groupdate", "~> 6.8"
+
+gem "resend", "~> 1.6"

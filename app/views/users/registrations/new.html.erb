@@ -1,129 +1,171 @@
-<%# app/views/users/registrations/new.html.erb %>
-<div class="min-h-screen bg-slate-50 font-sans antialiased text-slate-900 flex flex-col lg:flex-row">
-  <!-- Left Column: Registration Workspace -->
-  <div class="w-full lg:w-[55%] flex flex-col justify-center p-6 sm:p-10 md:p-16 bg-white shadow-xl lg:shadow-none">
-    <div class="w-full max-w-md mx-auto">
-      <!-- App Header Branding -->
-      <div class="flex items-center gap-2.5 mb-8">
-        <div class="h-9 w-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md shadow-indigo-100">
-          <span class="text-white font-black text-sm tracking-wider">R</span>
-        </div>
-        <span class="text-lg font-black text-slate-900 tracking-tight">
-          Retail<span class="text-indigo-600">OS</span>
-        </span>
+<!-- Main Container initialized with Alpine.js multi-step state -->
+<div x-data="{ step: 1 }" class="h-screen w-full flex flex-col lg:flex-row bg-white font-sans antialiased text-slate-900 select-none overflow-hidden">
+  <!-- ==================== LEFT COLUMN: MULTI-STEP BRANDING CANVAS & VISUAL PROGRESSION ==================== -->
+<div class="hidden lg:flex w-full lg:w-[42%] flex-shrink-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-6 sm:p-10 lg:p-12 flex-col justify-between relative h-screen lg:h-screen lg:max-h-screen overflow-hidden lg:sticky lg:top-0 border-b lg:border-b-0 lg:border-r border-slate-800/40 select-none [&-::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+  <!-- Top-Right Ambient Warm Spotlight Glow -->
+  <div class="absolute -top-20 -right-20 w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-[130px] pointer-events-none z-0"></div>
+  <!-- Seamless Technical Grid Architecture Line Overlay -->
+  <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-10 pointer-events-none z-0"></div>
+  <!-- Top Row: App Header Identity Branding -->
+  <div class="z-10 flex items-center gap-2.5">
+    <div class="h-8 w-8 rounded-xl bg-amber-500 flex items-center justify-center shadow-md shadow-amber-500/20">
+      <span class="text-slate-950 font-black text-xs tracking-wider">R</span>
+    </div>
+    <span class="text-sm font-black text-white tracking-tight">
+      Retail<span class="text-amber-400">OS</span>
+    </span>
+  </div>
+  <!-- Center Presentation Headline Typography (Clamped text blocks to eliminate spatial overflow) -->
+  <div class="z-10 my-auto w-full max-w-md text-left py-2">
+    <h1 class="text-4xl sm:text-5xl font-black text-white tracking-tight leading-[1.1] mb-4 select-none">
+      Get Started<br/>
+      with Us
+    </h1>
+    <p class="text-slate-400 text-xs sm:text-sm font-medium leading-relaxed max-w-[300px] select-none">
+      Complete these easy steps to register your account and launch your digital store workspace.
+    </p>
+  </div>
+  <!-- Bottom Row: Onboarding Stage Status Cards (Migrated to absolute column grid architecture) -->
+  <div class="z-10 grid grid-cols-2 gap-3 w-full mt-auto">
+    <!-- Step 1 Tracking Card -->
+    <div :class="step === 1 ? 'bg-white text-slate-950 shadow-xl shadow-black/30 scale-[1.02]' : 'bg-white/[0.02] border border-white/5 text-slate-500'"
+         class="p-3.5 rounded-2xl flex flex-col justify-between h-24 lg:h-28 transition-all duration-300 ease-in-out w-full box-border">
+      <div :class="step === 1 ? 'bg-slate-950 text-white' : 'bg-white/5 text-slate-500'"
+           class="w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center transition-colors">
+        1
       </div>
-      <!-- Heading -->
-      <div class="mb-6">
-        <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Create your account</h1>
-        <p class="text-slate-500 text-sm mt-1">Join RetailOS and modernize your store management in minutes.</p>
+      <p class="text-[11px] font-bold leading-tight tracking-tight">
+        Sign up your account
+      </p>
+    </div>
+    <!-- Step 2 Tracking Card -->
+    <div :class="step === 2 ? 'bg-white text-slate-950 shadow-xl shadow-black/30 scale-[1.02]' : 'bg-white/[0.02] border border-white/5 text-slate-500'"
+         class="p-3.5 rounded-2xl flex flex-col justify-between h-24 lg:h-28 transition-all duration-300 ease-in-out w-full box-border">
+      <div :class="step === 2 ? 'bg-slate-950 text-white' : 'bg-white/5 text-slate-500'"
+           class="w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center transition-colors">
+        2
       </div>
-      <!-- Core Form -->
-     <%= form_for(resource, as: resource_name, url: signup_path, html: { class: "space-y-5" }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-      <!-- User Information Fields -->
-      <div class="space-y-4">
-        <div>
-          <%= f.label :full_name, "Full Name", class: "block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5" %>
-          <%= f.text_field :full_name, autofocus: true, placeholder: "John Doe", 
-                class: "block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-sm transition" %>
-        </div>
-        <div>
-          <%= f.label :email, class: "block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5" %>
-          <%= f.email_field :email, autocomplete: "email", placeholder: "you@example.com", 
-                class: "block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-sm transition" %>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <%= f.label :password, class: "block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5" %>
-            <%= f.password_field :password, autocomplete: "new-password", placeholder: "••••••••", 
-                  class: "block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-sm transition" %>
+      <p class="text-[11px] font-bold leading-tight tracking-tight">
+        Set up your workspace
+      </p>
+    </div>
+  </div>
+</div>
+  <!-- ==================== RIGHT COLUMN: CRISP LIGHT FORM WORKSPACE HUB ==================== -->
+  <div class="w-full lg:w-[58%] h-full bg-white p-5 sm:p-8 lg:p-10 flex flex-col justify-between overflow-hidden">
+    <!-- Top Action Route Context Navigation Bar -->
+    <div class="w-full flex items-center justify-between text-xs font-medium mb-2 shrink-0">
+      <div class="flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-slate-900"></span>
+        <span class="text-xs font-bold text-slate-900 tracking-tight">RetailOS Workspace</span>
+      </div>
+      <div class="text-slate-400">
+        Already registered?
+        <%= link_to "Sign In Instead", new_session_path(resource_name), class: "text-slate-900 font-bold hover:underline transition ml-1" %>
+      </div>
+    </div>
+    <!-- Core Interactive Form Framework Area -->
+    <div class="w-full max-w-md mx-auto my-auto overflow-hidden">
+      <!-- Primary Entry Submission Processing Architecture Block -->
+      <%= form_for(resource, as: resource_name, url: signup_path, html: { class: "w-full" }) do |f| %>
+        <!-- Nested Flash/Validation Messaging Hub Layout -->
+        <%= render "devise/shared/error_messages", resource: resource %>
+        <!-- ==================== STAGE 1: ACCOUNT CREDENTIALS ==================== -->
+        <div x-show="step === 1"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 transform translate-x-4"
+             x-transition:enter-end="opacity-100 transform translate-x-0"
+             class="space-y-3.5">
+          <div class="mb-4 text-left">
+            <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Create your account</h1>
+            <p class="text-slate-400 text-xs font-medium mt-1">Get started by entering your basic login security credentials details.</p>
           </div>
           <div>
-            <%= f.label :password_confirmation, "Confirm Password", class: "block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5" %>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "••••••••", 
-                  class: "block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-sm transition" %>
+            <%= f.label :full_name, "Full Name", class: "block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5" %>
+            <%= f.text_field :full_name, autofocus: true, placeholder: "eg. Babs Morla",
+                class: "block w-full px-4 py-3 bg-slate-50 border border-slate-200/70 rounded-xl focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 text-xs font-medium text-slate-700 placeholder-slate-400 transition" %>
           </div>
-        </div>
-      </div>
-      <!-- Shop Tenant Custom Configurations -->
-      <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-          <h3 class="text-xs font-bold uppercase tracking-widest text-slate-600">Shop Details</h3>
-        </div>
-        <%= f.fields_for :memberships do |membership_fields| %>
-          <%= membership_fields.fields_for :store do |store_fields| %>
-            <div class="space-y-3">
-              <div>
-                <%= store_fields.label :name, "Shop Name", class: "block text-xs font-semibold text-slate-600 mb-1" %>
-                <%= store_fields.text_field :name, required: true, placeholder: "e.g., Apex Emporium", 
-                      class: "block w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-sm transition" %>
-              </div>
-              <div>
-                <%= store_fields.label :location, "Store Location / Branch", class: "block text-xs font-semibold text-slate-600 mb-1" %>
-                <%= store_fields.text_field :location, required: true, placeholder: "e.g., East Legon, Accra", 
-                      class: "block w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-sm transition" %>
-              </div>
+          <div>
+            <%= f.label :email, "Email Address", class: "block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5" %>
+            <%= f.email_field :email, autocomplete: "email", placeholder: "you@example.com",
+                class: "block w-full px-4 py-3 bg-slate-50 border border-slate-200/70 rounded-xl focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 text-xs font-medium text-slate-700 placeholder-slate-400 transition" %>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <%= f.label :password, "Password", class: "block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5" %>
+              <%= f.password_field :password, autocomplete: "new-password", placeholder: "••••••••",
+                  class: "block w-full px-4 py-3 bg-slate-50 border border-slate-200/70 rounded-xl focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 text-xs font-medium text-slate-700 placeholder-slate-400 transition" %>
             </div>
-          <% end %>
-        <% end %>
+            <div>
+              <%= f.label :password_confirmation, "Confirm Password", class: "block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5" %>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "••••••••",
+                  class: "block w-full px-4 py-3 bg-slate-50 border border-slate-200/70 rounded-xl focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 text-xs font-medium text-slate-700 placeholder-slate-400 transition" %>
+            </div>
+          </div>
+          <div class="pt-2">
+            <button type="button" @click="step = 2"
+                    class="w-full cursor-pointer bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-950 hover:to-slate-950 text-white font-bold py-3.5 px-4 rounded-xl transition duration-150 text-xs tracking-wide shadow-lg shadow-slate-900/10 flex items-center justify-center gap-1.5">
+              <span>Continue to Shop Details</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <!-- ==================== STAGE 2: SHOP ONBOARDING DETAILS ==================== -->
+        <div x-show="step === 2"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 transform translate-x-4"
+             x-transition:enter-end="opacity-100 transform translate-x-0"
+             class="space-y-3.5" x-cloak>
+          <div class="mb-4 text-left">
+            <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Shop Configurations</h1>
+            <p class="text-slate-400 text-xs font-medium mt-1">Set up your business presence profiles to finalize your administrative workspace tenant.</p>
+          </div>
+          <div class="bg-slate-50/80 rounded-2xl p-5 border border-slate-100 space-y-4">
+            <div class="flex items-center gap-2 pb-1.5 border-b border-slate-200/50">
+              <span class="h-1.5 w-1.5 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50"></span>
+              <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Shop Identity Details</h3>
+            </div>
+            <%= f.fields_for :memberships do |membership_fields| %>
+              <%= membership_fields.fields_for :store do |store_fields| %>
+                <div class="space-y-3.5">
+                  <div>
+                    <%= store_fields.label :name, "Shop / Company Name", class: "block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5" %>
+                    <%= store_fields.text_field :name, required: true, placeholder: "e.g., Al-Wahda Multimedia",
+                        class: "block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 text-xs font-medium text-slate-700 placeholder-slate-300 transition" %>
+                  </div>
+                  <div>
+                    <%= store_fields.label :location, "Store Location / Branch City", class: "block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5" %>
+                    <%= store_fields.text_field :location, required: true, placeholder: "e.g., Akim Ofoase, Akyemansa",
+                        class: "block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 text-xs font-medium text-slate-700 placeholder-slate-300 transition" %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+          <!-- Dual Multi-Step Actions Form Execution Footer Bar -->
+          <div class="grid grid-cols-12 gap-3 pt-2">
+            <button type="button" @click="step = 1"
+                    class="col-span-4 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-4 rounded-xl transition duration-150 text-xs tracking-wide text-center">
+              ← Back
+            </button>
+            <%= f.submit "Complete Setup & Create Store →",
+                data: { disable_with: "Setting up workspace..." },
+                class: "col-span-8 cursor-pointer bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-500 text-white font-bold py-3.5 px-4 rounded-xl transition duration-150 text-xs tracking-wide shadow-lg shadow-amber-500/10" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <!-- Workspace View System Base Signature Footer Row -->
+    <div class="flex items-center justify-between w-full pt-3 border-t border-slate-100 text-[9px] font-bold text-slate-400 tracking-wide shrink-0">
+      <div>
+        <p class="normal-case">Powered by <span class="text-slate-500">Babs Technologies</span> &bull; 2026</p>
       </div>
-      <!-- Actions -->
-      <div class="pt-1">
-        <%= f.submit "Create Account & Store", 
-              data: { disable_with: "Setting up your workspace..." },
-              class: "w-full cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition shadow-md shadow-indigo-100 hover:shadow-lg hover:shadow-indigo-200 text-sm" %>
+      <div class="flex items-center gap-4">
+        <a href="#" class="hover:text-slate-600 transition">Terms of Service</a>
+        <a href="#" class="hover:text-slate-600 transition">Privacy Policy</a>
       </div>
-    <% end %>
-    <!-- Authentication Resource Links -->
-    <div class="mt-6 text-center text-xs text-slate-400 font-medium">
-      <%= render "devise/shared/links" %>
     </div>
   </div>
-</div>
-<!-- Right Column: Context Marketing Display (Sticky Panel on Desktop) -->
-<div class="hidden lg:flex lg:w-[45%] bg-[#0a255c] relative items-center justify-center p-12 lg:sticky lg:top-0 lg:h-screen overflow-hidden">
-  <div class="absolute inset-0 bg-[linear-gradient(to_right,#0c2c6d_1px,transparent_1px),linear-gradient(to_bottom,#0c2c6d_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-20"></div>
-  <div class="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px]"></div>
-  <div class="absolute -top-20 -right-20 w-[400px] h-[400px] bg-sky-500/10 rounded-full blur-[100px]"></div>
-  <div class="z-10 w-full max-w-sm">
-    <div class="text-left mb-6">
-      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 mb-3 uppercase tracking-widest">
-        Introducing RetailOS
-      </span>
-      <h2 class="text-2xl lg:text-3xl font-extrabold text-white leading-snug tracking-tight">Your retail business, fully optimized.</h2>
-      <p class="text-slate-300 text-sm mt-2 leading-relaxed">Fast checkouts, smart inventory controls, and robust analytical tools built for modern merchants.</p>
-    </div>
-    <!-- Mini Live Dashboard Specimen Mockup -->
-    <div class="bg-[#0c2e71]/40 border border-indigo-400/10 rounded-xl p-5 backdrop-blur-md shadow-xl">
-      <div class="flex items-center justify-between pb-3 border-b border-indigo-500/20 mb-3">
-        <div class="flex items-center gap-1.5">
-          <span class="h-2 w-2 rounded-full bg-red-500/70"></span>
-          <span class="h-2 w-2 rounded-full bg-yellow-500/70"></span>
-          <span class="h-2 w-2 rounded-full bg-green-500/70"></span>
-        </div>
-        <div class="text-[9px] font-bold text-indigo-300 tracking-wider uppercase">Live Insights</div>
-      </div>
-      <div class="grid grid-cols-2 gap-3 mb-3">
-        <div class="bg-[#082252]/60 p-3 rounded-lg border border-indigo-500/5">
-          <p class="text-[9px] uppercase font-semibold text-slate-400 tracking-wider">Gross Revenue</p>
-          <p class="text-base font-bold text-white mt-0.5">₵42,890.50</p>
-        </div>
-        <div class="bg-[#082252]/60 p-3 rounded-lg border border-indigo-500/5">
-          <p class="text-[9px] uppercase font-semibold text-slate-400 tracking-wider">Sales Completed</p>
-          <p class="text-base font-bold text-indigo-400 mt-0.5">154 <span class="text-[10px] text-emerald-400 font-bold ml-0.5">↑12%</span></p>
-        </div>
-      </div>
-      <div class="space-y-1.5">
-        <div class="flex justify-between text-[11px] font-medium text-slate-300">
-          <span>Inventory Capacity</span>
-          <span>84%</span>
-        </div>
-        <div class="w-full bg-[#082252] rounded-full h-1.5">
-          <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 84%"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 </div>

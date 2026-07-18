@@ -2,26 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
 
+  /* 1. Reset Core Document Viewport Framework */
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /* Prevents horizontal layout breaks while allowing normal vertical scrolling */
+    overflow-x: hidden;
+    background-color: #ffffff;
+    /* Forces smooth rendering engines across WebKit browsers */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
 
-/*
+  /* 2. Seamless Onboarding & Native Mobile Scrolling Engine */
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    -webkit-overflow-scrolling: touch;
+  }
 
-@layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
+  /* 3. Global Interactive Focus Ring Normalization (Optional but clean) */
+  input:focus,
+  button:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
   }
 }
 
-*/
+@layer utilities {
 
+  /* 4. Alpine.js Initial Render Flash Prevention */
+  [x-cloak] {
+    display: none !important;
+  }
 
-.hidden {
-  display: none;
+  /* 5. Reusable Engine Scrollbar Kill-Switch Utility */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+  }
 }
-
-*{
-  overflow-x: hidden;
-}
-
-
-

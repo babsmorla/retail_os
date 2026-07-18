@@ -47,7 +47,7 @@ end
 
     def safe_role
   requested = params.dig(:user, :role)
-  requested.in?(%w[shop_keeper inventory_officer]) ? requested : "shop_keeper"
+  requested.in?(%w[shop_keeper admin]) ? requested : "shop_keeper"
 end
   end
 end

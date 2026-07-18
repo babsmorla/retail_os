@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   # Devise routes using your custom controllers
   devise_for :users, controllers: {
     sessions: "users/sessions",
-    registrations: "users/registrations"
+    registrations: "users/registrations",
+     passwords: "users/passwords"
   }
 
   # Custom Devise Path Aliases
