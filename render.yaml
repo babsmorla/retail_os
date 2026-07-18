@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: retail-os
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: retail-os-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_SERVE_STATIC_FILES
+        value: true
+      - key: RESEND_API_KEY
+        sync: false
+
+databases:
+  - name: retail-os-db
+    plan: free
+    databaseName: retail_os_production
+    user: retail_os
