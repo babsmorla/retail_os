@@ -1,0 +1,103 @@
+<% content_for :title, "Reset Shop" %>
+<div class="w-full max-w-xl mx-auto my-8 sm:my-14 p-1 ">
+  <!-- Back / Cancel Context Link Anchor -->
+  <div class="mb-5 flex items-center">
+    <%= link_to shop_keeper_dashboard_path, class: "group inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-slate-900 transition" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 transform group-hover:-translate-x-0.5 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7M3 12h18" />
+      </svg>
+      Back to Dashboard
+    <% end %>
+  </div>
+  <!-- Main System Action Container Card -->
+  <div class="bg-white border border-slate-200/80 rounded-2xl shadow-xl shadow-slate-200/30 overflow-hidden select-none">
+    <!-- Top Decorative Warning Header Profile Banner -->
+    <div class="bg-gradient-to-r from-red-50 to-orange-50/50 border-b border-red-100 p-6 flex items-start gap-4">
+      <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-xl font-black tracking-tight text-slate-900">Reset Shop Workspace</h1>
+        <p class="text-slate-500 text-xs font-medium mt-0.5">You are about to clear transactional data for <span class="text-slate-900 font-bold"><%= current_store.name %></span>.</p>
+      </div>
+    </div>
+    <div class="p-6 sm:p-8 space-y-6">
+      <!-- Structural Granular Deconstruction Log Grid Module -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <!-- Destructive Item Column Panel -->
+        <div class="bg-red-50/20 border border-red-100/50 rounded-xl p-3.5">
+          <span class="block text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2">Permanently Deletes</span>
+          <ul class="space-y-1.5 text-xs text-slate-600 font-medium">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Sales & Receipts
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Products & Categories
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Stock History & Audits
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Employee Accounts
+            </li>
+          </ul>
+        </div>
+        <!-- Preserved Item Column Panel -->
+        <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5">
+          <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Will Be Retained</span>
+          <ul class="space-y-1.5 text-xs text-slate-600 font-medium">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Owner Admin Account
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Base Core Store Record
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Subscription Profiles
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Operational Settings
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Critical Final Intercept Notice Message -->
+      <div class="bg-amber-50 border border-amber-200/60 p-4 rounded-xl flex items-start gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v-6.75a2.25 2.25 0 0 0 2.25-2.25Z" />
+        </svg>
+        <p class="text-[11px] text-amber-800 font-medium leading-relaxed">
+          <span class="font-bold uppercase tracking-wide block mb-0.5">Attention Required</span>
+          This action completely overrides operational memory modules. Once executed, data states cannot be restored or undone.
+        </p>
+      </div>
+      <!-- Core Interactive Parameter Form Area Block Wrapper -->
+      <%= form_with url: shop_keeper_shop_reset_path, method: :post, class: "space-y-4" do %>
+        <!-- Workspace Target String Matching Parameter Field -->
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+            Type the store name to confirm (<span class="text-slate-800 font-extrabold normal-case select-text"><%= current_store.name %></span>)
+          </label>
+          <input type="text" name="confirmation" required autocomplete="off" placeholder="Type core store name exactly"
+                 class="block w-full px-4 py-3 bg-slate-50 border border-slate-200/70 rounded-xl focus:bg-white focus:outline-none focus:border-red-500 focus:ring-4 focus:ring-red-500/10 text-xs font-medium text-slate-700 placeholder-slate-400/80 transition">
+        </div>
+        <!-- Identity Credentials Verification Parameter Field -->
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Confirm Your Security Password</label>
+          <input type="password" name="password" required placeholder="••••••••"
+                 class="block w-full px-4 py-3 bg-slate-50 border border-slate-200/70 rounded-xl focus:bg-white focus:outline-none focus:border-red-500 focus:ring-4 focus:ring-red-500/10 text-xs font-medium text-slate-700 placeholder-slate-400/80 transition">
+        </div>
+        <!-- Executive Execution Control Triggers Button Row Wrapper -->
+        <div class="flex flex-col sm:flex-row items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <%= link_to "Cancel, Keep Data", shop_keeper_dashboard_path,
+              class: "w-full sm:w-auto text-center px-4 py-3 text-xs font-bold text-slate-400 hover:text-slate-700 transition order-2 sm:order-1" %>
+          <%= submit_tag "Permanently Reset Shop", 
+              data: { disable_with: "Purging core records payload..." },
+              class: "w-full sm:w-auto cursor-pointer bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 px-5 rounded-xl transition duration-150 text-xs tracking-wide shadow-lg shadow-red-600/10 text-center order-1 sm:order-2" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

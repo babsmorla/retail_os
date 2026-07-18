@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :staff
     resources :inventory, only: [ :index ]
     resource :store_switch, only: [ :update ]
+    resource :shop_reset, only: [ :new, :create ]
     resources :receipts, only: [ :show ]
 
     resources :products do
