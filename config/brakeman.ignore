@@ -1,0 +1,51 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "a392f716228fefddb18eacf7b53779a7330921db749fc54f92e1a210e1b20967",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/admin/users_controller.rb",
+      "line": 40,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:full_name, :email, :password, :phone_number, :role)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "role is force-restricted to a safe value at runtime after permit (see safe_role/role-guard logic in create action); admin creation intentionally allows role assignment, scoped and validated against User.roles"
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "a430f55a1770f4b4e85450bc81950819b3586710725ca241d733e431eb744cf1",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/shop_keeper/staff_controller.rb",
+      "line": 44,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:first_name, :last_name, :email, :password, :role, :phone_number)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ShopKeeper::StaffController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "role is force-restricted to shop_keeper/inventory_officer only after permit; this form can never create an admin regardless of submitted value"
+    }
+  ],
+  "brakeman_version": "8.0.5"
+}
