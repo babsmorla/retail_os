@@ -1,59 +1,62 @@
 <div class="min-h-screen w-full flex flex-col md:flex-row bg-white font-sans antialiased text-slate-900">
-  <!-- ==================== LEFT COLUMN: FULL-SCREEN BRANDING CANVAS ==================== -->
-  <!-- ==================== RIGHT COLUMN: FULL-SCREEN FORM WORKSPACE ==================== -->
-  <div class="w-full md:w-1/2 bg-white p-8 sm:p-12 md:p-16 lg:p-24 flex flex-col justify-between relative">
+  <!-- ==================== LOGIN WORKSPACE PANEL ==================== -->
+  <!-- Mobile: Dark/Blue Canvas | Desktop: Clean White Workspace Grid -->
+  <div class="w-full md:w-1/2 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 md:bg-none md:bg-white p-6 sm:p-10 md:p-16 lg:p-24 flex flex-col justify-between relative min-h-screen overflow-hidden select-none">
+    <!-- Mobile-Only Ambient Blueprint Background Accents -->
+    <div class="absolute -top-20 -right-20 w-[350px] h-[350px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none z-0 md:hidden"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:2.5rem_2.5rem] opacity-10 pointer-events-none z-0 md:hidden"></div>
     <!-- Top Actions Navbar Row -->
-    <div class="flex items-center justify-between w-full mb-12 md:mb-0">
-      <!-- Secondary branding text anchor -->
+    <div class="z-10 flex flex-col sm:flex-row items-center sm:justify-between gap-3 w-full mb-8 md:mb-0">
+      <!-- Secondary Identity Mark -->
       <div class="flex items-center gap-1.5">
-        <span class="w-2.5 h-2.5 rounded-full bg-slate-900 shadow-sm"></span>
-        <span class="text-xs font-bold text-slate-900 tracking-tight">RetailOS Platform</span>
+        <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 md:bg-slate-900 shadow-sm"></span>
+        <span class="text-xs font-bold text-white md:text-slate-900 tracking-tight">RetailOS Platform</span>
       </div>
       <!-- Absolute Contextual Navigation Link Trigger -->
       <div class="text-xs text-slate-400 font-medium">
         Don't have an account? 
-        <%= link_to "Sign Up Your Shop", signup_path, class: "text-slate-900 font-bold hover:underline transition ml-1" %>
+        <%= link_to "Sign Up Your Shop", signup_path, class: "text-white md:text-slate-900 hover:text-indigo-400 md:hover:text-indigo-600 font-bold hover:underline transition ml-1" %>
       </div>
     </div>
     <!-- Main Input Content Stack Area -->
-    <div class="w-full max-w-sm mx-auto my-auto py-8">
+    <div class="z-10 w-full max-w-sm mx-auto my-auto py-8">
       <!-- Welcome Header Block -->
       <div class="text-center mb-8">
-        <h1 class="text-2xl lg:text-3xl font-extrabold tracking-tight text-slate-900 mb-2">Welcome back to RetailOS!</h1>
+        <h1 class="text-2xl lg:text-3xl font-extrabold tracking-tight text-white md:text-slate-900 mb-2">Welcome back to RetailOS!</h1>
         <p class="text-slate-400 text-xs font-medium">Please enter your credentials to sign in to your account</p>
       </div>
       <!-- System Devise Form Loop Block -->
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-4" }) do |f| %>
         <!-- Field Instance: Email -->
         <div>
-          <%= f.label :email, "Email Address", class: "block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2" %>
+          <%= f.label :email, "Email Address", class: "block text-[11px] font-bold text-slate-400 md:text-slate-500 uppercase tracking-wider mb-2" %>
           <div class="relative rounded-xl">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 md:text-slate-400">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
               </svg>
             </div>
             <%= f.email_field :email,
-                             autofocus: true,
-                             autocomplete: "email",
-                             placeholder: "babs@example.com",
-                             class: "block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-xs font-medium text-slate-700 placeholder-slate-400 transition" %>
+                              autofocus: true,
+                              autocomplete: "email",
+                              placeholder: "babs@example.com",
+                              class: "block w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-800 md:bg-slate-50 md:border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-xs font-medium text-slate-200 md:text-slate-700 placeholder-slate-500 md:placeholder-slate-400 transition" %>
           </div>
         </div>
         <!-- Field Instance: Password -->
         <div>
-          <%= f.label :password, "Password", class: "block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2" %>
+          <%= f.label :password, "Password", class: "block text-[11px] font-bold text-slate-400 md:text-slate-500 uppercase tracking-wider mb-2" %>
           <div class="relative rounded-xl">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 md:text-slate-400">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
               </svg>
             </div>
             <%= f.password_field :password,
-                                autocomplete: "current-password",
-                                placeholder: "minimum 8 characters",
-                                class: "block w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-xs font-medium text-slate-700 placeholder-slate-400 transition" %>
-            <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center cursor-pointer text-slate-400 hover:text-slate-600 transition">
+                                 autocomplete: "current-password",
+                                 placeholder: "minimum 8 characters",
+                                 class: "block w-full pl-11 pr-11 py-3 bg-slate-900/50 border border-slate-800 md:bg-slate-50 md:border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-xs font-medium text-slate-200 md:text-slate-700 placeholder-slate-500 md:placeholder-slate-400 transition" %>
+            <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center cursor-pointer text-slate-500 hover:text-slate-300 md:text-slate-400 md:hover:text-slate-600 transition">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -63,8 +66,8 @@
         </div>
         <!-- Configuration Row: Keep Signed In Checkbox -->
         <div class="flex items-center pt-1">
-          <%= f.check_box :remember_me, class: "h-4 w-4 rounded border-slate-300 text-indigo-500 focus:ring-indigo-500/40 bg-slate-50 cursor-pointer" %>
-          <%= f.label :remember_me, "Keep me signed in", class: "ml-2.5 block text-xs font-semibold text-slate-600 cursor-pointer select-none" %>
+          <%= f.check_box :remember_me, class: "h-4 w-4 rounded border-slate-800 bg-slate-900 md:border-slate-300 md:bg-slate-50 text-indigo-500 focus:ring-indigo-500/40 cursor-pointer" %>
+          <%= f.label :remember_me, "Keep me signed in", class: "ml-2.5 block text-xs font-semibold text-slate-300 md:text-slate-600 cursor-pointer select-none" %>
         </div>
         <!-- Action Core Trigger: Submit Form -->
         <div class="pt-2">
@@ -76,98 +79,92 @@
       <!-- Bottom Nested Dynamic Alternative Links -->
       <div class="text-center mt-6">
         <% if respond_to?(:new_password_path) %>
-          <%= link_to "Forgot password?", new_password_path(resource_name), class: "text-xs font-bold text-slate-400 hover:text-slate-800 underline underline-offset-4 transition" %>
+          <%= link_to "Forgot password?", new_password_path(resource_name), class: "text-xs font-bold text-slate-400 hover:text-white md:hover:text-slate-800 underline underline-offset-4 transition" %>
         <% else %>
-          <a href="#" class="text-xs font-bold text-slate-400 hover:text-slate-800 underline underline-offset-4 transition">Forgot password?</a>
+          <a href="#" class="text-xs font-bold text-slate-400 hover:text-white md:hover:text-slate-800 underline underline-offset-4 transition">Forgot password?</a>
         <% end %>
       </div>
     </div>
     <!-- Light Workspace Footer Block Row -->
-    <div class="flex items-center justify-between w-full pt-4 border-t border-slate-100 text-[10px] font-bold text-slate-400 tracking-wide mt-auto">
+    <div class="z-10 flex flex-col sm:flex-row items-center sm:justify-between gap-2 w-full pt-4 border-t border-slate-800 md:border-slate-100 text-[10px] font-bold text-slate-500 md:text-slate-400 tracking-wide mt-auto">
       <div>
-        <p class="text-slate-400/80">Having trouble? Contact your admin.</p>
+        <p class="text-slate-500 md:text-slate-400/80">Having trouble? Contact your admin.</p>
       </div>
       <div class="flex items-center gap-4">
-        <a href="#" class="hover:text-slate-700 transition">Privacy Policy</a>
-        <a href="#" class="hover:text-slate-700 transition">Support</a>
+        <a href="#" class="hover:text-white md:hover:text-slate-700 transition">Privacy Policy</a>
+        <a href="#" class="hover:text-white md:hover:text-slate-700 transition">Support</a>
       </div>
     </div>
   </div>
-  
-
-<!-- ==================== LEFT COLUMN: FULL-SCREEN BRANDING CANVAS ==================== -->
-<div class="w-full md:w-1/2 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-6 sm:p-10 md:p-12 lg:p-16 flex flex-col justify-between items-center relative overflow-hidden select-none text-center self-stretch min-h-full">
-  <!-- Top-Right Ambient Warm Spotlight Glow (Strictly clipped to avoid horizontal scrollbars) -->
-  <div class="absolute -top-20 -right-20 w-[350px] h-[350px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
-  <!-- Clean Seamless Grid Architecture Overlay -->
-  <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:2.5rem_2.5rem] opacity-10 pointer-events-none z-0"></div>
-  <!-- Top Spacing Header Bracket -->
-  <div class="w-full h-2"></div>
-  <!-- Central Presentation Content Core Stack -->
- <!-- Central Presentation Content Core Stack (Hardened against scrollbars) -->
-<div class="z-10 flex flex-col items-center justify-center my-auto w-full max-w-sm px-4 overflow-visible">
-  <!-- Minimalist Floating App Icon Badge Frame -->
-  <div class="bg-gradient-to-b from-slate-800/90 to-slate-900/90 p-4.5 rounded-2xl shadow-xl border border-slate-800/60 mb-6 w-16 h-16 flex items-center justify-center overflow-visible select-none">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-indigo-400">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h2.64c1.3 0 2.36-1.06 2.36-2.36V10.36M18 21V10.36M12 3.3l8.64 5.2a1.2 1.2 0 0 1 .56 1.02V18.6M12 3.3L3.36 8.5A1.2 1.2 0 0 0 2.8 9.52V18.6M12 3.3v17.7" />
-    </svg>
-  </div>
-  <!-- Solid Core Typography Block (Explicitly set to block, auto height, and visible overflow) -->
-  <h2 class="block w-full h-auto text-2xl sm:text-3xl lg:text-4xl font-black text-white text-center tracking-tight mb-3 overflow-visible select-none leading-tight">
-    Your store,<br class="hidden lg:inline"/>
-     fully digital.
-  </h2>
-  <p class="block w-full h-auto text-slate-400 text-xs font-medium text-center max-w-[280px] mb-8 overflow-visible opacity-90 leading-normal">
-    Manage sales, inventory, and accounting — all in one unified environment. Built for speed.
-  </p>
-  <!-- Frosted Glassmorphic Safe Grid Architecture Panel -->
-  <div class="grid grid-cols-3 gap-2 w-full border border-white/5 bg-white/[0.02] backdrop-blur-xl p-3 rounded-2xl shadow-2xl mb-8 overflow-visible">
-    <!-- Feature 1: Sales -->
-    <div class="flex flex-col items-center justify-center p-2 rounded-xl transition duration-150 hover:bg-white/[0.04]">
-      <div class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl mb-2 text-indigo-400">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+  <!-- ==================== DESKTOP BRANDING CANVAS ==================== -->
+  <!-- Hidden on mobile viewports entirely, active from 'md:' upwards -->
+  <div class="hidden md:flex w-full md:w-1/2 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-6 sm:p-10 md:p-12 lg:p-16 flex-col justify-between items-center relative overflow-hidden select-none text-center min-h-[420px] md:min-h-full">
+    <!-- Ambient Warm Spotlight Glow -->
+    <div class="absolute -top-20 -right-20 w-[350px] h-[350px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+    <!-- Seamless Grid Architecture Overlay -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:2.5rem_2.5rem] opacity-10 pointer-events-none z-0"></div>
+    <div class="w-full h-2"></div>
+    <!-- Central Presentation Content Core Stack -->
+    <div class="z-10 flex flex-col items-center justify-center my-auto w-full max-w-sm px-4 overflow-visible">
+      <!-- Minimalist Floating App Icon Badge Frame -->
+      <div class="bg-gradient-to-b from-slate-800/90 to-slate-900/90 p-4.5 rounded-2xl shadow-xl border border-slate-800/60 mb-6 w-16 h-16 flex items-center justify-center overflow-visible select-none">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-indigo-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h2.64c1.3 0 2.36-1.06 2.36-2.36V10.36M18 21V10.36M12 3.3l8.64 5.2a1.2 1.2 0 0 1 .56 1.02V18.6M12 3.3L3.36 8.5A1.2 1.2 0 0 0 2.8 9.52V18.6M12 3.3v17.7" />
         </svg>
       </div>
-      <span class="text-[10px] font-bold text-slate-300 tracking-wide">Sales</span>
-    </div>
-    <!-- Feature 2: Secure -->
-    <div class="flex flex-col items-center justify-center p-2 rounded-xl transition duration-150 hover:bg-white/[0.04]">
-      <div class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl mb-2 text-indigo-400">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286Z" />
-        </svg>
+      <!-- Solid Core Typography Block -->
+      <h2 class="block w-full h-auto text-2xl sm:text-3xl lg:text-4xl font-black text-white text-center tracking-tight mb-3 overflow-visible select-none leading-tight">
+        Your store,<br class="hidden lg:inline"/>
+        fully digital.
+      </h2>
+      <p class="block w-full h-auto text-slate-400 text-xs font-medium text-center max-w-[280px] mb-8 overflow-visible opacity-90 leading-normal">
+        Manage sales, inventory, and accounting — all in one unified environment. Built for speed.
+      </p>
+      <!-- Frosted Glassmorphic Safe Grid Architecture Panel -->
+      <div class="grid grid-cols-3 gap-1.5 sm:gap-2 w-full border border-white/5 bg-white/[0.02] backdrop-blur-xl p-2.5 sm:p-3 rounded-2xl shadow-2xl mb-8 overflow-visible">
+        <!-- Feature 1: Sales -->
+        <div class="flex flex-col items-center justify-center p-2 rounded-xl transition duration-150 hover:bg-white/[0.04]">
+          <div class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl mb-2 text-indigo-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+          </div>
+          <span class="text-[10px] font-bold text-slate-300 tracking-wide">Sales</span>
+        </div>
+        <!-- Feature 2: Secure -->
+        <div class="flex flex-col items-center justify-center p-2 rounded-xl transition duration-150 hover:bg-white/[0.04]">
+          <div class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl mb-2 text-indigo-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286Z" />
+            </svg>
+          </div>
+          <span class="text-[10px] font-bold text-slate-300 tracking-wide">Secure</span>
+        </div>
+        <!-- Feature 3: Accounting -->
+        <div class="flex flex-col items-center justify-center p-2 rounded-xl transition duration-150 hover:bg-white/[0.04]">
+          <div class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl mb-2 text-indigo-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.854-1.106-2.24 0-3.093 1.114-.851 2.916-.851 4.03 0 .153.117.301.247.442.389M9 6h6m-3-2v2m0 12v2" />
+            </svg>
+          </div>
+          <span class="text-[10px] font-bold text-slate-300 tracking-wide">Accounting</span>
+        </div>
       </div>
-      <span class="text-[10px] font-bold text-slate-300 tracking-wide">Secure</span>
-    </div>
-    <!-- Feature 3: Accounting -->
-    <div class="flex flex-col items-center justify-center p-2 rounded-xl transition duration-150 hover:bg-white/[0.04]">
-      <div class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl mb-2 text-indigo-400">
-        <svg xmlns="http://www.w3.org/2000/xl" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.854-1.106-2.24 0-3.093 1.114-.851 2.916-.851 4.03 0 .153.117.301.247.442.389M9 6h6m-3-2v2m0 12v2" />
-        </svg>
+      <!-- Interface Pagination Bullets Indicators -->
+      <div class="flex items-center gap-1.5 pt-2 overflow-visible select-none">
+        <span class="w-2 h-2 rounded-full bg-white block"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/20 block"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/20 block"></span>
       </div>
-      <span class="text-[10px] font-bold text-slate-300 tracking-wide">Accounting</span>
+    </div>
+    <!-- Identity Branding Footer -->
+    <div class="z-10 text-center w-full mt-auto pt-4">
+      <div class="inline-flex items-center gap-1.5 text-[9px] font-bold text-slate-500/80 tracking-wider uppercase">
+        <span>Powered by</span>
+        <span class="text-slate-400 normal-case font-extrabold tracking-normal">Babs Technologies</span>
+        <span class="text-slate-600/60">&bull;</span>
+        <span class="font-mono text-slate-500">2026</span>
+      </div>
     </div>
   </div>
-  <!-- Interface Pagination Bullets Indicators -->
-  <div class="flex items-center gap-1.5 pt-2 overflow-visible select-none">
-    <span class="w-2 h-2 rounded-full bg-white block"></span>
-    <span class="w-1.5 h-1.5 rounded-full bg-white/20 block"></span>
-    <span class="w-1.5 h-1.5 rounded-full bg-white/20 block"></span>
-  </div>
-</div>
-  <!-- High-End Minimalist Identity Branding Footer -->
-  <div class="z-10 text-center w-full mt-auto pt-4">
-    <div class="inline-flex items-center gap-1.5 text-[9px] font-bold text-slate-500/80 tracking-wider uppercase">
-      <span>Powered by</span>
-      <span class="text-slate-400 normal-case font-extrabold tracking-normal">Babs Technologies</span>
-      <span class="text-slate-600/60">&bull;</span>
-      <span class="font-mono text-slate-500">2026</span>
-    </div>
-  </div>
-</div>
-
-
-
 </div>
