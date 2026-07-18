@@ -37,8 +37,9 @@ end
 private
 
 def user_params
- # Remove :first_name, :last_name, and :username as they aren't in the DB
- params.require(:user).permit(:full_name, :email, :password, :role, :phone_number)
+  permitted = params.require(:user).permit(:full_name, :email, :password, :phone_number, :role)
+  permitted[:role] = nil unless permitted[:role].in?(User.roles.keys)
+  permitted
 end
   end
 end

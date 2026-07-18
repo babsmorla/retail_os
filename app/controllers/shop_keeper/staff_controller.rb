@@ -18,24 +18,24 @@ module ShopKeeper
       @user = User.new
     end
 
-    def create
-      @user = User.new(user_params.except(:first_name, :last_name))
+   def create
+  @user = User.new(user_params.except(:first_name, :last_name, :role))
+  @user.role = safe_role
+  @user.owner_id = current_user.owner_id.presence || current_user.id
 
-      # Set the owner_id to the top-level owner.
-      # If current_user has an owner, use that; otherwise, current_user IS the owner.
-      @user.owner_id = current_user.owner_id.presence || current_user.id
+  if params[:user][:first_name].present? || params[:user][:last_name].present?
+    @user.full_name = "#{params[:user][:first_name]} #{params[:user][:last_name]}".strip
+  end
 
-      if params[:user][:first_name].present? || params[:user][:last_name].present?
-        @user.full_name = "#{params[:user][:first_name]} #{params[:user][:last_name]}".strip
-      end
+  User.transaction do
+    @user.save!
+    @user.memberships.create!(store: current_store)
+  end
 
-      if @user.save
-        @user.memberships.create!(store: current_store)
-        redirect_to shop_keeper_staff_index_path, notice: "Staff member added successfully."
-      else
-        render :new, status: :unprocessable_entity
-      end
-    end
+  redirect_to shop_keeper_staff_index_path, notice: "Staff member added successfully."
+rescue ActiveRecord::RecordInvalid
+  render :new, status: :unprocessable_entity
+end
 
     private
 
@@ -44,5 +44,10 @@ module ShopKeeper
         :first_name, :last_name, :email, :password, :role, :phone_number
       )
     end
+
+    def safe_role
+  requested = params.dig(:user, :role)
+  requested.in?(%w[shop_keeper inventory_officer]) ? requested : "shop_keeper"
+end
   end
 end
