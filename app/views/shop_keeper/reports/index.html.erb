@@ -1,65 +1,94 @@
-<div class="p-6 bg-slate-50 min-h-screen">
-  <h1 class="text-2xl font-bold mb-6 text-slate-800">Store Reports</h1>
-  <%= form_with url: shop_keeper_reports_path, method: :get, class: "bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8" do |f| %>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
-      <div class="flex flex-col">
-        <label class="text-xs font-semibold text-slate-500 uppercase mb-2">Specific Date</label>
-        <%= f.date_field :specific_date, value: params[:specific_date], class: "border-slate-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+<div class="min-h-screen bg-slate-50/50 px-4 py-8 sm:px-6 lg:px-8">
+  <!-- Header -->
+  <div class="mb-8 border-b border-slate-200 pb-5">
+    <h1 class="text-3xl font-bold tracking-tight text-slate-900">Store Reports</h1>
+    <p class="mt-2 text-sm text-slate-500">Monitor transaction histories, view overall revenues, and analyze sales frequencies.</p>
+  </div>
+  <!-- Filters Form -->
+  <%= form_with url: shop_keeper_reports_path, method: :get, class: "bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8" do |f| %>
+    <!-- We persist the active period selection if a user types a search instead -->
+    <%= hidden_field_tag :period, params[:period] if params[:period].present? %>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-4 items-end">
+      <!-- Date Field -->
+      <div class="flex flex-col gap-1.5">
+        <label for="specific_date" class="text-xs font-semibold tracking-wider text-slate-500 uppercase">Specific Date</label>
+        <%= f.date_field :specific_date, value: params[:specific_date], class: "block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2" %>
       </div>
-      <div class="md:col-span-2 flex flex-col">
-        <label class="text-xs font-semibold text-slate-500 uppercase mb-2">Or Select Period</label>
-        <div class="flex gap-2">
+      <!-- Quick Periods Selector -->
+      <div class="lg:col-span-2 flex flex-col gap-1.5">
+        <label class="text-xs font-semibold tracking-wider text-slate-500 uppercase">Or Select Period</label>
+        <div class="inline-flex rounded-lg border border-slate-200 p-1 bg-slate-50 w-fit">
           <% ["today", "yesterday", "this_week", "this_month"].each do |p| %>
-            <%= link_to p.humanize, shop_keeper_reports_path(period: p), 
-                class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:period] == p || (params[:period].nil? && params[:specific_date].blank? && p == 'today') ? 'bg-blue-600 text-white' : 'bg-white border border-slate-300 text-slate-600 hover:bg-slate-50'}" %>
+            <% is_active = params[:period] == p || (params[:period].nil? && params[:specific_date].blank? && p == 'today') %>
+            <%= link_to p.humanize, shop_keeper_reports_path(period: p, search: params[:search]), 
+                  class: "px-4 py-1.5 rounded-md text-sm font-medium transition-all #{is_active ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5' : 'text-slate-600 hover:text-slate-900'}" %>
           <% end %>
         </div>
       </div>
-      <div class="flex flex-col">
-        <%= f.text_field :search, value: params[:search], placeholder: "Receipt #...", class: "border-slate-300 rounded-lg shadow-sm" %>
+      <!-- Search Field -->
+      <div class="flex flex-col gap-1.5">
+        <label for="search" class="text-xs font-semibold tracking-wider text-slate-500 uppercase">Search Transaction</label>
+        <%= f.text_field :search, value: params[:search], placeholder: "Receipt #...", class: "block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2" %>
       </div>
     </div>
-    <div class="mt-4 flex gap-3">
-      <%= f.submit "Apply Filters", class: "bg-slate-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-slate-900 transition" %>
-      <%= link_to "Reset", shop_keeper_reports_path, class: "px-4 py-2 border border-slate-300 rounded-lg text-slate-600 hover:bg-slate-50" %>
+    <!-- Action Buttons -->
+    <div class="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
+      <%= link_to "Clear Filters", shop_keeper_reports_path, class: "text-sm font-semibold text-slate-600 hover:text-slate-900 px-4 py-2 transition" %>
+      <%= f.submit "Apply Filters", class: "bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-semibold shadow-sm transition cursor-pointer" %>
     </div>
   <% end %>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-      <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Revenue</p>
-      <p class="text-3xl font-bold text-slate-900 mt-1"><%= number_to_currency(@total_revenue) %></p>
+  <!-- Key Metrics Grid -->
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 mb-8">
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
+      <div>
+        <p class="text-sm font-semibold tracking-wider text-slate-400 uppercase">Total Revenue</p>
+        <p class="text-3xl font-bold tracking-tight text-slate-900 mt-2"><%= number_to_currency(@total_revenue) %></p>
+      </div>
+      <div class="mt-4 flex items-center text-xs font-medium text-emerald-600 bg-emerald-50 rounded-md px-2 py-1 w-fit">
+        Gross Earnings
+      </div>
     </div>
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-      <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Transactions</p>
-      <p class="text-3xl font-bold text-slate-900 mt-1"><%= @total_transactions %></p>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
+      <div>
+        <p class="text-sm font-semibold tracking-wider text-slate-400 uppercase">Total Transactions</p>
+        <p class="text-3xl font-bold tracking-tight text-slate-900 mt-2"><%= @total_transactions %></p>
+      </div>
+      <div class="mt-4 flex items-center text-xs font-medium text-blue-600 bg-blue-50 rounded-md px-2 py-1 w-fit">
+        Volume Processed
+      </div>
     </div>
   </div>
+  <!-- Data Table Card -->
   <div class="bg-white shadow-sm border border-slate-200 rounded-xl overflow-hidden">
-    <table class="w-full text-left">
-      <thead class="bg-slate-50 border-b border-slate-200">
-        <tr>
-          <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Receipt #</th>
-          <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Total</th>
-          <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Cashier</th>
-          <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Date/Time</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-100">
-        <% if @sales.any? %>
-          <% @sales.each do |sale| %>
-            <tr class="hover:bg-slate-50 transition">
-              <td class="px-6 py-4 text-sm font-medium text-slate-900"><%= sale.receipt_number %></td>
-              <td class="px-6 py-4 text-sm text-slate-600"><%= number_to_currency(sale.grand_total) %></td>
-              <td class="px-6 py-4 text-sm text-slate-600"><%= sale.shop_keeper&.full_name || "N/A" %></td>
-              <td class="px-6 py-4 text-sm text-slate-500"><%= sale.created_at.strftime("%b %d, %Y %I:%M %p") %></td>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-slate-50/70 border-b border-slate-200">
+            <th scope="col" class="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Receipt #</th>
+            <th scope="col" class="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Total</th>
+            <th scope="col" class="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Cashier</th>
+            <th scope="col" class="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Date / Time</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200/60 bg-white">
+          <% if @sales.any? %>
+            <% @sales.each do |sale| %>
+              <tr class="hover:bg-slate-50/50 transition duration-150 ease-in-out">
+                <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-900"><%= sale.receipt_number %></td>
+                <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-700"><%= number_to_currency(sale.grand_total) %></td>
+                <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600"><%= sale.shop_keeper&.full_name || "N/A" %></td>
+                <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-400 font-mono"><%= sale.created_at.strftime("%b %d, %Y %I:%M %p") %></td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="4" class="px-6 py-12 text-center">
+                <p class="text-sm font-medium text-slate-400">No transactions recorded matching the selected criteria.</p>
+              </td>
             </tr>
           <% end %>
-        <% else %>
-          <tr>
-            <td colspan="4" class="px-6 py-8 text-center text-slate-500">No sales found for the selected criteria.</td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

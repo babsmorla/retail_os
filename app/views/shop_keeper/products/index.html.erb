@@ -1,20 +1,26 @@
 <% content_for :title, "Inventory Products" %>
 <div class="p-6 space-y-6 bg-slate-50 min-h-screen">
   <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-  <div>
-    <h1 class="text-3xl font-bold text-slate-900">Inventory Products</h1>
-    <p class="text-slate-500">Manage stock levels, pricing, and product details</p>
-  </div>
-  <div class="flex gap-3">
-    <%= link_to "View Archive", archived_shop_keeper_products_path, 
+    <div>
+      <h1 class="text-3xl font-bold text-slate-900">Inventory Products</h1>
+      <p class="text-slate-500">Manage stock levels, pricing, and product details</p>
+    </div>
+    <div class="flex gap-3">
+      <% if current_user.admin? %>
+        <%= link_to "View Archive", archived_shop_keeper_products_path, 
         class: "px-5 py-3 rounded-xl bg-white border border-slate-200 font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-50" %>
-    <%= link_to "Export CSV", shop_keeper_products_path(format: :csv), 
-        class: "px-5 py-3 rounded-xl bg-white border border-slate-200 font-semibold text-slate-700 hover:bg-slate-50" %>
-    <%= link_to "+ New Product", new_shop_keeper_product_path, 
+      <% end %>
+      <%= link_to "Export CSV",
+    shop_keeper_products_path(format: :csv),
+    class: current_user.admin? ?
+      "px-5 py-3 rounded-xl bg-white border border-slate-200 font-semibold text-slate-700 hover:bg-slate-50" :
+      "px-5 py-3 rounded-xl bg-blue-600 border border-indigo-600 font-semibold text-white hover:bg-indigo-700" %>
+      <% if current_user.admin? %>
+        <%= link_to "+ New Product", new_shop_keeper_product_path, 
         class: "bg-blue-600 text-white px-5 py-3 rounded-xl font-semibold hover:bg-blue-700 shadow-sm" %>
+      <% end %>
+    </div>
   </div>
-</div>
-
   <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
     <%= form_with url: shop_keeper_products_path, method: :get, class: "relative" do |f| %>
       <div class="relative flex items-center">
@@ -23,7 +29,6 @@
         <div class="absolute right-4 px-2 py-1 bg-white border border-slate-200 rounded-lg text-[10px] font-bold text-slate-400">⌘F</div>
       </div>
     <% end %>
-
     <div class="flex items-center gap-2 overflow-x-auto pb-1">
       <%= link_to "All", shop_keeper_products_path, class: "px-6 py-2.5 rounded-xl font-bold text-sm transition-all #{params[:category_id].blank? ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}" %>
       <% Category.all.each do |cat| %>
@@ -31,7 +36,6 @@
       <% end %>
     </div>
   </div>
-
   <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
     <div class="overflow-x-auto max-h-[60vh]">
       <table class="w-full text-left border-collapse">
@@ -43,12 +47,14 @@
             <th class="p-4 text-xs font-bold text-slate-400 uppercase">Category</th>
             <th class="p-4 text-xs font-bold text-slate-400 uppercase">Pricing</th>
             <th class="p-4 text-xs font-bold text-slate-400 uppercase">Stock</th>
-            <th class="p-4 text-xs font-bold text-slate-400 uppercase text-right">Actions</th>
+            <% if current_user.admin? %>
+              <th class="p-4 text-xs font-bold text-slate-400 uppercase text-right">Actions</th>
+            <% end %>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100">
           <% @products.each_with_index do |product, index| %>
-          <% next if product.nil? %>
+            <% next if product.nil? %>
             <tr class="hover:bg-slate-50 transition">
               <td class="p-4 text-sm text-slate-400"><%= index + 1 %></td>
               <td class="p-4 font-bold text-slate-900"><%= product.name %></td>
@@ -65,24 +71,24 @@
                   <span class="px-2.5 py-1 rounded-lg bg-green-50 text-green-700 text-xs font-bold border border-green-100"><%= product.quantity_on_hand %></span>
                 <% end %>
               </td>
-           <td class="p-4 text-right flex justify-end gap-3">
-  <% if current_user&.admin? %>
-    <%= link_to "Edit", edit_shop_keeper_product_path(product), 
+              <td class="p-4 text-right flex justify-end gap-3">
+                <% if current_user&.admin? %>
+                  <%= link_to "Edit", edit_shop_keeper_product_path(product), 
                 class: "text-blue-600 font-semibold text-sm hover:underline" %>
-   <%= button_to "Deactivate", shop_keeper_product_path(product), 
+                  <%= button_to "Deactivate", shop_keeper_product_path(product), 
     method: :delete, 
     data: { turbo_confirm: "Are you sure you want to deactivate this product?" },
     class: "text-red-600 font-semibold text-sm hover:underline border-none bg-transparent p-0 cursor-pointer",
     form: { style: "display: inline-block;" } 
 %>
-  <% end %>
-</td>
-          <% end %>
-        </tbody>
-      </table>
+                <% end %>
+              </td>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <% if @products.empty? %>
+        <div class="p-12 text-center text-slate-400">No products found.</div>
+      <% end %>
     </div>
-    <% if @products.empty? %>
-      <div class="p-12 text-center text-slate-400">No products found.</div>
-    <% end %>
   </div>
-</div>

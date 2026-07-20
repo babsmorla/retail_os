@@ -60,6 +60,25 @@ module ShopKeeper
       @receipt = Receipt.find(params[:receipt_id])
     end
 
+    def history
+  base_scope = current_user.admin? ? Sale.all : current_store.sales
+
+  @sales_scope = base_scope
+
+  if params[:query].present?
+    @sales_scope = @sales_scope.where(
+      "receipt_number ILIKE ?",
+      "%#{params[:query].strip}%"
+    )
+  end
+
+  @sales = @sales_scope
+             .includes(:shop_keeper, :receipt)
+             .order(created_at: :desc)
+             .page(params[:page])
+             .per(25)
+end
+
     def new
   @categories = current_store.categories.where(active: true)
 
