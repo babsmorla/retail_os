@@ -376,10 +376,11 @@
       <h2 class="text-xl font-black text-slate-800 tracking-tight">Quick Stock Adjustment</h2>
       <p class="text-slate-400 text-xs font-semibold mt-1 mb-6">Instantly manually adjust inventory records.</p>
       <!-- We use plain form_with to prevent 'nil' model exceptions if @adjustment isn't defined in index -->
-      <%= form_with scope: :stock_adjustment,
+     <%= form_with scope: :stock_adjustment,
               url: admin_inventory_adjustments_path,
               method: :post,
-              local: true do |f| %>
+              local: true,
+              html: { "@submit" => "open = false" } do |f| %>
         <!-- Product Dropdown Section -->
         <div>
           <%= f.label :product_id, "Target Product", class: "block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" %>

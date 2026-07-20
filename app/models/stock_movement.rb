@@ -1,6 +1,5 @@
 class StockMovement < ApplicationRecord
 belongs_to :store
-belongs_to :store # <--- ADD THIS
   belongs_to :product
 
   belongs_to :reference,

@@ -1,38 +1,41 @@
 class Admin::InventoryAdjustmentsController < ShopKeeper::BaseController
-def new
-    @products = Product.order(:name).page(params[:page]).per(5)
-    @adjustment = StockAdjustment.new
-  end
-
-
-
   def create
-  product = Product.find(adjustment_params[:product_id])
+    product = Product.find(adjustment_params[:product_id])
 
-  Inventory::AdjustStockService.new(
-    product: product,
-    quantity: adjustment_params[:quantity],
-    adjustment_type: adjustment_params[:adjustment_type],
-    reason: adjustment_params[:reason],
-    user: current_user
-  ).call
+    Inventory::AdjustStockService.new(
+      product: product,
+      quantity: adjustment_params[:quantity],
+      adjustment_type: adjustment_params[:adjustment_type],
+      reason: adjustment_params[:reason],
+      user: current_user
+    ).call
 
-  redirect_to shop_keeper_inventory_index_path,
-              notice: "Stock adjusted successfully"
-end
+    redirect_to shop_keeper_inventory_index_path,
+                notice: "Stock adjusted successfully"
 
+  rescue StandardError => e
+    flash.now[:alert] = e.message
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "flash",
+          partial: "layouts/flash"
+        ), status: :unprocessable_entity
+      end
+
+      format.html do
+        redirect_to shop_keeper_inventory_index_path,
+                    alert: e.message
+      end
+    end
+  end
 
 
   private
 
-
   def adjustment_params
     params.require(:stock_adjustment)
-    .permit(
-      :product_id,
-      :quantity,
-      :adjustment_type,
-      :reason
-    )
+          .permit(:product_id, :quantity, :adjustment_type, :reason)
   end
 end

@@ -29,9 +29,9 @@ module Inventory
           @product.quantity_on_hand + movement_quantity
 
 
-        if new_quantity < 0
-          raise StandardError, "Cannot remove more stock than is available."
-        end
+       if new_quantity < 0
+  raise ArgumentError, "Cannot remove more stock than is available."
+       end
 
 
         @product.update!(
@@ -40,21 +40,22 @@ module Inventory
 
 
         StockMovement.create!(
-          product: @product,
-          quantity: movement_quantity,
-          movement_type: :adjustment,
-          reference: adjustment
-        )
+  store: @product.store,
+  product: @product,
+  quantity: movement_quantity.abs,
+  movement_type: :adjustment,
+  reference: adjustment
+)
 
 
         if @adjustment_type == "add"
-
-          AccountingEntry.create!(
-            amount: @product.cost_price * @quantity,
-            entry_type: :restock_cost,
-            description: @reason,
-            reference: adjustment
-          )
+AccountingEntry.create!(
+  store: @product.store,
+  amount: @product.cost_price * @quantity,
+  entry_type: :restock_cost,
+  description: @reason,
+  reference: adjustment
+)
 
         end
 
