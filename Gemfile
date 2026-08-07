@@ -74,4 +74,4 @@ gem "kaminari"
 gem "csv"
 gem "groupdate", "~> 6.8"
 
-gem "resend", "~> 1.6"
+gem "resend", "~> 1.7"
